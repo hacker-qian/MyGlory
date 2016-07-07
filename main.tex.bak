@@ -1,0 +1,316 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This is the template for submission to HPCA 2016
+% The cls file is a modified from  'sig-alternate.cls'
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{sig-alternate}
+\usepackage{mathptmx} % This is Times font
+
+\newcommand{\ignore}[1]{}
+\usepackage{fancyhdr}
+\usepackage[normalem]{ulem}
+\usepackage[hyphens]{url}
+\usepackage{hyperref}
+
+
+%%%%%%%%%%%---SETME-----%%%%%%%%%%%%%
+\newcommand{\hpcasubmissionnumber}{NaN}
+ \newcommand{\tabincell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%---SETME-----%%%%%%%%%%%%%
+\title{vNUIOA: Optimizing Non-Uniform I/O Access in Virtualized Environment for Multicore Systems}
+\author{Jianmin Qian Jian Li Junshen Tan Yangde Li Zhiyuan Bo}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\maketitle
+
+\pagestyle{plain}
+
+\begin{abstract}
+
+This document is intended to serve as a sample for submissions to HPCA 2016. We provide some guidelines that authors should follow when submitting papers to the conference. In an effort to respect the efforts of reviewers and in the interest of fairness to all prospective authors, we request that all submissions follow the formatting and submission rules detailed below.
+
+\end{abstract}
+
+\section{Introduction}
+Driven by the rapid growth of big data applications and cloud computing, most of today's applications are computing intensive or memory intensive and these applications are running in the cloud to make full use of multi-core resources. To efficiently transfer data between high performance servers and these cloud applications become significantly important. Especially in the current high performance networked environment, such inefficiency will cause huge performance degradation. However, the underlying topology of multi-core systems and virtualization pose great challenge in solving this problem. Several observations of performance degradation are reported because of hardware resources affinity[1, 2, 3]. Existing researches focusing on the memory locality [4, 5, 6] to reducing the remote access and virtual machine scheduling to minimize uncore penalty [7, 8, 9].
+
+Each CPU socket accesses faster to the directly attached hardware devices than the remote ones, such as Non-Uniform memory Access (NUMA). However, directly attached devices are not limited to memory and CPU, I/O devices such as high speed Ethernet network adapter also connect to the CPU socket through the interconnect bus. When a thread access I/O devices remotely, latency will increased and inter-node maximum bandwidth decreased. This access asymmetry becomes main bottleneck of today¡¯s high performance computing. Especially in the current high performance virtualized environment such as Network Function Virtualization (NFV)[], I/O latency in the host NUMA machine can cause a huge performance degradation of the latency sensitive NFV workloads, which are running in the virtual machines (VMs). This significantly impacts the performance data center infrastructures.
+%We run Netperf benchmark on two of the same Intel 4-sockets NUMA machine, one is server other is client, with the KVM virtual machine monitor running on the server. We use the client to drive a TCP\_STREAM profile with different message sizes.
+
+Figure 1 shows a Four-sockets Intel Ivy Bridge NUMA architecture with a 40 Gigabit Ethernet adapter. We simply run number of virtual machines based on this architecture by varying vCPUs and memory mappings among the multiple sockets. First, we banding all the VM vCPUs to the specific core on the socket 0 and mapping all the memory of the VM to the memory bank attached to socket 0 (mark as red process), then we changed the vCPUs banding to the socket 2 and memory mapping to the socket 2 (mark as green process). Traditionally, these are both NUMA local assess, we observe a huge I/O performance difference between this two kinds of NUMA local access, I/O Throughtput of the first kind mapping is average 35.1\% (max up to 68.1\%)higher than the second kind. The main reason of this performance degradation is that when transfer data with network adapter, the second kind mapping is I/O device remote access and need to use two hops interconnection between sockets, this increase the bandwidth consumption and access latency. Recent works also has realize this problem, study [10] introduce the overheads of high Speed database query processing over this architecture in the high speed networks. work [11] also characterize the I/O bandwidth performance models of data intensive applications.
+\begin{figure}[tb]
+\centering
+\includegraphics[width=3.5in]{Test1-2.png}
+\vspace{-3.5em}
+\caption{Two kinds of NUMA remote access.}
+\vspace{-1.5em}
+\label{fig_sim}
+\end{figure}
+
+Although previous studies presented several affinity models to optimizing NUMA system, these models are not suitable for current high performance virtualized environment for following reasons.
+
+%This document is intended to serve as a sample for submissions to HPCA 2016. It is heavily derived from previous conferences, in particular MICRO 2015.
+
+%We provide some guidelines that authors should follow when submitting papers to the conference. \textbf{This format is derived from the ACM \texttt{sig-alternate.cls} file, with the major difference that it is 10pt Times font}.
+
+%In an effort to respect the efforts of reviewers and in the interest of fairness to all prospective authors, we request that all submissions follow the formatting and submission rules detailed below. Submissions that (grossly) violate these instructions may not be reviewed, at the discretion of the Program Chair, in order to maintain a review process that is fair to all potential authors.
+%In a nutshell:
+\vspace{1ex}
+
+\begin{itemize}
+\item Existing NUMA affinity models are 2-dimension and mainly focusing on the memory bank and virtual CPU locality, the consideration of high speed interconnections affinity such as I/O devices locality are poor. since almost the cloud space applications frequent transfer data with high speed I/O devices, current affinity model must take I/O into consideration.
+\item Many traditional NUMA performance model use the hop distance to introduce the access penalty between two devices. However, hop distance is not accurate for modeling, especially for the I/O performance modeling due to: First, the hop distance contain less details about the underlying topology such as the access latency, so it can not be used in the accurate performance measurement. Second, hop distance always be a constant in the system. When the performance of the system changing in real time, the hop distance can not reflect this change and cause the performance prediction inaccurate.
+\item Furthermore, previous work only optimizing the Non-Uniform I/O access by performance tuning. They just binding the virtual machine threads and its memory together to the I/O device attached nodes to ensure local I/O access. This static method is not always efficient because too many threads in one node will increase the CPU load and hurt the performance significantly when the system load is too high.
+%\item References must include all authors to facilitate the reviewing process (no \emph{et al.})Papers must be at most 11 pages, not including references, in two-column format.Paper must be submitted in printable PDF format.Text must be minimum 10pt Times font.
+%\item There is no page limit for references.
+
+\end{itemize}
+In this paper, we present a novel locality model, vNUIOA, which mainly optimizing IO locality in the high performance virtualized system and both taking thread to thread affinity in to consideration. We first install SR-IOV technology into our system to providing high performance I/O virtualization, then we implement a hardware monitor by change the performance monitor units (PMU) both in physical machine and virtual machines. Based on the PMU hardware resource usages such as IO requests, VM address distribution and CPU utilization, we analyzed
+We evaluated our model on Intel multi-core machine and conduct a series of experimental. Results show that
+
+The contributions of this paper include:
+
+This paper is organized as follows: Section 2 provides an overview of NUIOA architecture, I/O virtualization technology and motivation for this research. Section 3 characterizes performance in NUIOA virtualized systems. Sections 4 and 5 present our design and implementation. Section 6 evaluates our prototype and compares with existing methods.Section 7 discusses related work and Section 8 concludes this paper.
+
+\section{Background and Motivation}
+In this section, we begin with a brief introduction to NUMA architecture and I/O virtualization,then we analysis asymmetric I/O access in current high performance virtualized envirnoment. Lastly we show several challenges on optimal performance modeling based on this architecture.
+\subsection{NUMA System and I/O Virtualization}
+%Performance Degradation in NUMA Architecture with High Speed Network Adapter
+Traditional multicore processor shared with one memory controller. With the number of cores per socket increases, one memory controller results in high memory controller contention and bandwidth competition. In order to improve the utilization of multicore system, each CPU socket has been designed with its own integrated memory controller (IMC) which have faster access to local memory bank than the remote ones. This Non-Uniform Memory Access (NUMA) characteristic fully take advantage of multicore system and high speed memory bandwidth.
+
+In order to move data fast enough to keep up with today's processors in the virtualized system, I/O devices also should be virtualized and to be shared by multiple virtual machines. In traditional para-virtualization, when a guest VM accesses the I/O device, VMM needs to intervene the data processing to share the physical device. this extra VMM intervention bring additional overhead which tremendously affect the I/O performance of guest VMs. Single Root I/O virtualization (SR-IOV) [] proposes a set a hardware enhancements for PCIe device. SR-IOV enable to create multiple "lightweight" PCIe functions,known as virtual Functions (VFs) that still contain the major device resources. In this work, we mainly consider SR-IOV because With the hardware enhancement, SRIOV remove the major VMM intervention and achieve I/O virtualization without losing performance.
+\begin{figure}[tb]
+\centering
+\includegraphics[width=3.5in]{NUIOA-arch.pdf}
+\vspace{-1em}
+\caption{NUIOA architecture with four 8-cores Intel Xeon E5-4610 processors.}
+\vspace{-1em}
+\label{fig_sim}
+\end{figure}
+
+\subsection{I/O Performance Degradation in NUMA System}
+With the transfer speed of current network adapter become higher and higher, such as Mellanox 40,56 and 100 Gigabit Ethernet adapter [] is being adopted broadly in the data center. The transfer speed of these network adapter is higher than the memory bandwidth and resulting in shifting system bottleneck from memory remote access to asymmetric I/O access in the NUMA architecture. I/O device is directly connected to one or more nodes in the multicore system, local cores and devices have privilegiert access to the I/O device, remote ones must use interconnection to transfer data to the I/O devices, resulting in extra inter-node bandwidth occupation and access latency. This asymmetry I/O access is called Non-Uniform I/O Access (NUIOA). Figure 2 shows a ubiquitous four-sockets NUIOA architecture based on the Intel Xeon E5 Family processors. Each socket consists of eight cores that share the last level cache (L3 cache), memory controller and physical memory bank. sockets link with each other via a high-speed, point-to-point interconnection such as Intel Quick Path Interconnect (QPI)[]. Network adapter is directly attached to the socket 0 with the Intel Data Direct I/O (DDIO) technology [] which could directly sent data to the cache instead of memory, consequently, data transfer remotely to other sockets and increase access latency and bandwidth consumption.
+
+%Papers must be submitted in printable PDF format and should contain a maximum of 11 pages of single-spaced, two-column text, not including references. You may include any number of pages for references, but see below for more instructions.
+\subsection{Challenges in Optimal Performance Modeling}
+Most of current performance models and resource scheduling algorithms focus on the NUMA architecture, but with the emerging of network applications which need huge amounts of I/O operations,these models are no longer suitable. However, to modeling NUIOA architecture in virtualized environment and achieving Optimal Performance is more complicated due to the following challenges:
+
+\textbf{Virtualization poses additional abstraction of the underlying topology:} Applications running in the virtual machine know little about the physical architecture, resulting in the optimization difficult of virtual machine performance. We should design a efficient virtual machine to physical machine message passing mechanisms.
+
+\textbf{Efficient online performance monitor both in virtualized environment and physical machine:} The system first must to online monitor the hot page in the virtual machines, I/O request times and system load in the physical machine. These hardware informations are important to our next phase decision, so it must be done efficient and continuously.
+
+\textbf{Frequent migrate thread and memory may incur high overhead:} Because of each VMs vCPU is regard as a thread in the system, when we migrate the VMs vCPU to other sockets to get optimal performance, the memory of the thread also should be migrated. what's the most important is that migrate such a large amounts of memory can incur high overhead. Thus, we must design efficient and a low overhead thread and memory migrating mechanism and this is challenging because of: 1.migrate a VMs memory always with guest virtual address (GPA) to the host physical address (HPA) translation. 2.we should take system load and threads affinity both into considertion to decide when and how to migrate memory.
+
+%\begin{itemize}
+%
+%\item If you are using \LaTeX~\cite{lamport94}to typeset your paper, then we strongly recommend that you use the template provided. \textbf{Please set your document to Times font \\ (\texttt{\textbackslash usepackage\{mathptmx\}}) and do not play with interline spacing}.
+%
+%\item If you are using a different software package to typeset your paper, then please adhere to the guidelines mentioned in the table below. \textbf{You must use 10pt Times font or larger}.
+%
+%\end{itemize}
+
+%\begin{table}[h]
+%\caption{Formatting guidelines.}
+%
+%\begin{tabular}{ll}
+%\hline
+%Field &
+%Value \\
+%\hline
+%Page limit &
+%11 pages w/o refs. \\
+%Paper size &
+%US Letter 8.5x11in \\
+%Top margin &
+%1in \\
+%Bottom margin &
+%1in \\
+%Left margin &
+%0.75in \\
+%Right margin &
+%0.75in \\
+%Body &
+%2-col., single-spaced \\
+%Separation between columns &
+%0.25in \\
+%Body font &
+%10pt Times \\
+%Abstract font &
+%10pt Times \\
+%Section heading font &
+%12pt, bold \\
+%Subsection heading font &
+%10pt, bold \\
+%Caption font &
+%9pt (minimum), bold \\
+%References &
+%8pt, no page limit \\
+%\hline
+%\end{tabular}
+%
+%\end{table}
+
+%Please ensure that you include page numbers with your submission. This makes it easier for the reviewers to refer to different parts of your paper when they provide comments. Please ensure that your submission has a banner at the top of the title page which contains the submission number and a notice of confidentiality.
+
+\section{Characterizing degradation in NUIOA Virtualized Systems}
+In this section, we conduct a series experiments to study that: 1.how different access to directly attached devices affect the performance of the workload in virtualized environment, especially with the different I/O access patten. 2. how these access overheads affect the performance in NUIOA virtualized systems.
+\subsection{Experimental Environment}
+All experiments are conducted in a 4-sockets machine with Mellanox ConnectX-3 40 GigE adapter placed on the PCIe Gen3 x16 slots which directly connect to the socket 0. Each socket contains a Intel Xeon E5 4610 v2(Ivy Bridge architecture) processor and 32GB DDR3 memory bank. Each processor with 8 cores running at 2.3GHz and max turbo frequency can up to 2.7GHz. Each core has 32KB L1 data cache and 32KB L1 instruction cache, 256KB L2 cache and 16MB last level cache (LLC). Each socket equipped with 2 ways QPI with the communication speed 7.2GT/s. In our experiments, we enable the Intel Hyper-threading [](16 logical cores per socket). Therefor, we have total 64 cores and 128GB memory. we also configure the storage with 300G disk, the experiment configuration details are listed in the table 1.
+
+\begin{table}[h]
+\caption{Configuration details of our test server.}
+
+\begin{tabular}{ll}
+\hline
+Item &
+Configuration \\
+\hline
+CPU &
+\tabincell{l}{Intel Xeon E5-4610 v2\\2.3GHz (8 cores)} \\
+\hline
+Memory  &
+128G RAM DDR3 \\
+\hline
+Network Adapter &
+\tabincell{l}{Mellanox ConnectX-3 Dual-Port\\40 Gigabit Ethernet adapter}\\
+\hline
+Hypervisor &
+KVM 2.0.0\\
+\hline
+\end{tabular}
+
+\end{table}
+
+We use the KVM 2.0.0 as virtual machine monitor with the Intel VT-d and VT-x technology enable. Each VM run the Ubuntu 14.04LTS system and configured with one vCPUs and 1GB memory. In order to achieve high performance I/O virtualization, we enable SR-IOV technology and assigned a virtual function to each VM. We select a set of I/O and memory performance testing benchmarks,listed as table 2. The Netperf [] benchmark provides network bandwidth testing between two host on a network. Memcached [] is an in-memory key-value store for small chunks of arbitrary data to improve the performance of cloud applications.
+\begin{table}[h]
+\caption{Configuration details of our test server.}
+
+\begin{tabular}{ll}
+\hline
+Benchmark &
+Description \\
+\hline
+Netperf &
+\tabincell{l}{Benchmarking the network throughtput \\and delay}\\
+\hline
+YCSB  &
+\tabincell{l}{Benchmarking data read/write/update \\using MySQL database via YCSB interface}\\
+\hline
+\end{tabular}
+
+\end{table}
+ %Reviewing will be double-blind; therefore, please do not include any author names on any submitted documents except in the space provided on the submission form. You must also ensure that the metadata included in the PDF does not give away the authors. If you are improving upon your prior work, refer to your prior work in the third person and include a full citation for the work in the bibliography. For example, if you are building on your own prior work in the papers~\cite{nicepaper1,nicepaper2,nicepaper3}, you would say something like: ``While prior work did X, Y, and Z~\cite{nicepaper1,nicepaper2,nicepaper3}, this paper additionally does W, and is therefore much better.'' Do not omit or anonymize references for blind review. There is one exception to this for your own prior work that appeared in IEEE CAL, workshops without archived proceedings, etc., as discussed later in this document.
+
+%Recall that, per IEEE authorship guidelines, it is not acceptable to award honorary authorship or gift authorship. Please keep these guidelines in mind while determining the author list of your paper. Also please note that addition/removal of authors once the paper is accepted will have to be approved by the Program Chair.
+
+\subsection{Evaluation of Degradation}
+To identify and estimate NUIOA system overheads in the virtualized environment, we first run numbers of virtual machines in host machine with the KVM hypervisor, then we design four groups different scenarios by varying memory and vCPUs mappings among these sockets.
+%Ensure that the figures and tables are legible. Please also ensure that you refer to your figures in the main text. Many reviewers print the papers in gray-scale. Therefore, if you use colors for your figures, ensure that the different colors are highly distinguishable in gray-scale.
+\subsubsection{Degradation due to Virtualization}
+virtualization abstract the underlying hardware resources and present it to the virtual machines. Because of this high level abstraction, the guest OS known inaccurate about the host physical architecture. The VMM must efficiently and accurately translate informations between virtual machines and physical machine. For examples, the virtual CPU(s) need to be mapped into the socket cores and guest OS physical addresses need to translated to machine addresses. But the virtualized resources are not limited to CPU and memory, high speed I/O devices are also generally virtualized. If VMMs don not carefully take underlying topology into consideration, the performance could not be optimizing and system overheads increasing.
+
+Current VMMs like Xen, VMware ESXi and KVM, to keep local access by allocating all the memory of a VM to one NUMA node and migrate the vCPU threads to this node. This method is inefficient in today's high performance virtualized system due to following two reasons:
+\begin{itemize}
+  \item Some memory intensive applications running in the VM need large size of memory, when the VMs memory larger than the total socket memory bank, it have to be assign memory to other sockets. Similarly, while computing intensive applications need multiple VM vCPUs, also causing cross sockets mapping.
+  \item The system load balancing mechanism will cause the memory and vCPU migration. Guest OS shutdown and reboot both trigger load balancing in the host OS, the prior mapping relationship will be changed. This will affect the system performance.
+\end{itemize}
+
+In order to show the original I/O performance in the current virtualized environment,we simply run numbers of virtual machines without any memory and vCPU binding. Figure 4 show that
+
+\subsubsection{Degradation due to NUIOA}
+I/O devices as a very important resource in the computer system. Each VM has its own virtualized I/O devices and mapping to the physical machine. Previous works mainly focus on I/O virtualization to improving virtualized I/O devices performance. Currently, because of the speed of I/O devices become higher and higher, non-uniform I/O access bring new overheads. We evaluate these overheads by following for groups experiments.
+
+In the Figure 3(A), we binding VMs vCPU and memory together to the same socket to ensure memory is local access and testing the different socket I/O performance. For example, we deploy all VMs on the socket 0 by pining these VMs vCPU to the cores in the socket 0 and mapping VMs memory to the memory banks directly attached to the socket 0 (marked in red). Similarly, we test the performance of socket 1 (marked in yellow),socket 2 (marked in blue) and socket 3 (marked in green). In the Figure 3(B), we bind all the VMs vCPU to the socket 0 and mapping the memory respectively to socket 1 and socket 2. This scenario ensure all the VMs vCPU in the I/O device attached socket and its memory are remote access. Similar in the Figure (C), we consolidate all the VMs vCPU on the socket 1 and mapping the memory respectively to socket 0,2 and 3. This scenario is testing the performance of vCPU binding to the 1-hop distance socket and memory are remote access. Figure 3(D) show the VMs vCPU pining to 2-hops distance socket and memory mapping to socket 0 and 1. Not that in the Figure 3(B) and 3(D) we do not consider the socket 3 because of that in these two scenarios socket 1 and socket 3 are symmetrical. These four scenarios can testing all combination cases among the vCPU, memory and I/O devices.
+
+Figure 4 shows the normalized performance of our test results. Figure 4(A) shows that
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=7.0in]{Test-scen.pdf}
+\vspace{-1em}
+\caption{Four scenarios that we use to characterize NUIOA architecture overheads.}
+\vspace{-1em}
+\label{fig_sim}
+\end{figure*}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=7.0in]{Test2.pdf}
+\vspace{-1em}
+\caption{Testing results.}
+\vspace{-1em}
+\label{fig_sim}
+\end{figure*}
+
+\section{Design}
+In this section, we describe the detail design of our vNUIOA system. We enabling three modules for incorporating NUIOA overheads awareness with hypervisor: namely, online performance analzyer, threads migration manager and memory migration manger.
+
+An overview of vNUIOA is shown in Figure 5. It consists of the following three parts: \textbf{\emph{The online performance analzyer}} modules collects host and guest system information since the system booting, then the performance analzyer module store and pass these information to other two modules. \textbf{\emph{The threads migration manager}} module according to the system load and per-VM information to migrate the VMs threads to the appropriate NUMA node. \textbf{\emph{The memory migration manager}} module also migrate memory according to the system load and per-node number of memory page accesses.
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=7.0in]{VNUIOA-Arch.pdf}
+\vspace{-1em}
+\caption{Architecture of vNUIOA .}
+\vspace{-1em}
+\label{fig_sim}
+\end{figure*}
+\subsection{Online Performance Analzyer}
+
+\subsection{Threads Migration Manager}
+
+\subsection{Memory Migration Manager}
+
+%There is no length limit for references. Each reference must explicitly list all authors of the paper. Papers not meeting this requirement will be rejected.
+
+\section{Implementation}
+We implemented the vNUIOA prototype in the KVM virtualized platform. The online performance analzyer, the threads migration manager and the memory migration manager are implemented as individual daemous in the KVM system. We describes the implementation details of these three modules.
+\subsection{Online Performance Analzyer}
+
+\subsection{Threads Migration Manager}
+
+\subsection{Memory Migration Manager}
+
+\section{Evaluation}
+In this section we present experimental evaluation of the proposed VNUIOA system
+\section{Related work}
+
+\section{Conclusion}
+%Authors must register all their conflicts on the paper submission site. Conflicts are needed to ensure appropriate assignment of reviewers. If a paper is found to have an undeclared conflict that causes a problem OR if a paper is found to declare false conflicts in order to abuse or ?game? the review system, the paper may be rejected.
+
+%Please declare a conflict of interest with the following people for any author of your paper:
+
+%\begin{enumerate}
+%\item Your Ph.D. advisor(s), post-doctoral advisor(s), Ph.D. students, and post-doctoral advisees, \textbf{forever}.
+%\item People (including students) who shared your primary institution(s) \textbf{in the last five years}.
+%\item People with whom you have collaborated \textbf{in the last five years}, including:
+%\begin{itemize}
+%\item Co-authors of papers whether accepted, rejected, pending, or in preparation.
+%\item Co-PIs on funding proposals whether accepted, rejected, pending, or in preparation.
+%\end{itemize}
+%\item Decision-makers of your research funding whether current, pending, or in preparation, and researchers whom you fund.
+%\item Other relationships, such as family relations by blood or marriage or their equivalent (if they might be potential reviewers), close personal friendships, etc., that may be reasonably perceived as influencing judgment by a person aware of the relationship.
+%\end{enumerate}
+
+%``Service'' collaborations, such as co-authoring a report for a professional organization, serving on a program committee, or co-presenting tutorials, do not themselves create a conflict of interest. Co-authoring a paper that is a compendium of various projects with no true collaboration among the projects does not constitute a conflict among the authors of the different projects.
+%
+%We hope to draw most reviewers from the PC and the ERC, but others from the community may also write reviews. Please declare all your conflicts (not just restricted to the PC and ERC). When in doubt, contact the Program Chair.
+
+\section{Prior/Concurrent Submissions}
+
+%By submitting a manuscript, the authors guarantee that the manuscript has not been previously published or accepted for publication in a substantially similar form in any conference, journal, or the archived proceedings of a workshop (e.g., in the ACM digital library); but see exceptions below. The authors also guarantee that no paper that contains significant overlap with the contributions of the submitted paper will be under review for any other conference or journal or an archived proceedings of a workshop during the review period. Violation of any of these conditions will lead to rejection.
+%
+%The only exceptions to the above rules are for the authors? own papers in (1) workshops without archived proceedings such as in the ACM digital library (or where the authors chose not to have their paper appear in the archived proceedings), or (2) venues such as IEEE CAL where there is an explicit policy that such publication does not preclude longer conference submissions. In all such cases, the submitted manuscript may ignore the above work to preserve author anonymity. This information must, however, be provided on the submission form, as the Program Chair will make this information available to reviewers if it becomes necessary to ensure a fair review. As always, if you are in doubt, it is best to contact the Program Chair.
+%
+%Finally, we also note that the ACM Plagiarism Policy covers a range of ethical issues concerning the misrepresentation of other works or one's own work; please consult it carefully.
+
+%%%%%%% -- PAPER CONTENT ENDS -- %%%%%%%%
+
+%%%%%%%%% -- BIB STYLE AND FILE -- %%%%%%%%
+\bibliographystyle{ieeetr}
+\bibliography{ref}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}

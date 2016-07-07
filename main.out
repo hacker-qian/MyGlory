@@ -1,0 +1,32 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Background and Motivation}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Asymmetric Access in Multicore Syetems}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Performance Degradation Due to Asymmetric Access}{section.2}% 4
+\BOOKMARK [3][-]{subsubsection.2.2.1}{Evaluation of Asymmetric I/O Access}{subsection.2.2}% 5
+\BOOKMARK [3][-]{subsubsection.2.2.2}{Evaluation of Asymmetric I/O Access and Memory Access}{subsection.2.2}% 6
+\BOOKMARK [2][-]{subsection.2.3}{Complexity in Virtualized Systems}{section.2}% 7
+\BOOKMARK [1][-]{section.3}{Analysis of Optimal Affinity Modeling}{}% 8
+\BOOKMARK [2][-]{subsection.3.1}{Necessity of optimal Affinity Modeling}{section.3}% 9
+\BOOKMARK [2][-]{subsection.3.2}{Affinity Classes and Metrics}{section.3}% 10
+\BOOKMARK [3][-]{subsubsection.3.2.1}{VCPU to Memory Affinity}{subsection.3.2}% 11
+\BOOKMARK [3][-]{subsubsection.3.2.2}{VCPU to NIC Affinity}{subsection.3.2}% 12
+\BOOKMARK [3][-]{subsubsection.3.2.3}{NIC to Memory Affinity}{subsection.3.2}% 13
+\BOOKMARK [2][-]{subsection.3.3}{Optimal Affinity Model Function}{section.3}% 14
+\BOOKMARK [1][-]{section.4}{Design}{}% 15
+\BOOKMARK [2][-]{subsection.4.1}{Overview}{section.4}% 16
+\BOOKMARK [2][-]{subsection.4.2}{Runtime Performance monitor}{section.4}% 17
+\BOOKMARK [2][-]{subsection.4.3}{NUIOA Affinity Modeling}{section.4}% 18
+\BOOKMARK [3][-]{subsubsection.4.3.1}{NIC to vCPU Thread Affinity Modeling}{subsection.4.3}% 19
+\BOOKMARK [3][-]{subsubsection.4.3.2}{VCPU Thread to Memory Affinity Modeling}{subsection.4.3}% 20
+\BOOKMARK [1][-]{section.5}{Implementation}{}% 21
+\BOOKMARK [2][-]{subsection.5.1}{Online Performance Analyzer}{section.5}% 22
+\BOOKMARK [2][-]{subsection.5.2}{Threads Migration Manager}{section.5}% 23
+\BOOKMARK [2][-]{subsection.5.3}{Memory Migration Manager}{section.5}% 24
+\BOOKMARK [1][-]{section.6}{Evaluation}{}% 25
+\BOOKMARK [2][-]{subsection.6.1}{Experimental Environment}{section.6}% 26
+\BOOKMARK [2][-]{subsection.6.2}{Improvement of Performance}{section.6}% 27
+\BOOKMARK [2][-]{subsection.6.3}{}{section.6}% 28
+\BOOKMARK [1][-]{section.7}{Related work}{}% 29
+\BOOKMARK [1][-]{section.8}{Conclusion}{}% 30
+\BOOKMARK [1][-]{section.9}{Prior/Concurrent Submissions}{}% 31
+\BOOKMARK [1][-]{section.10}{References}{}% 32

@@ -1,0 +1,23 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Background and Motivation}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{NUMA System and I/O Virtualization}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{I/O Performance Degradation in NUMA System}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Challenges in Optimal Performance Modeling}{section.2}% 5
+\BOOKMARK [1][-]{section.3}{Characterizing degradation in NUIOA Virtualized Systems}{}% 6
+\BOOKMARK [2][-]{subsection.3.1}{Experimental Environment}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.2}{Evaluation of Degradation}{section.3}% 8
+\BOOKMARK [3][-]{subsubsection.3.2.1}{Degradation due to Virtualization}{subsection.3.2}% 9
+\BOOKMARK [3][-]{subsubsection.3.2.2}{Degradation due to NUIOA}{subsection.3.2}% 10
+\BOOKMARK [1][-]{section.4}{Design}{}% 11
+\BOOKMARK [2][-]{subsection.4.1}{Online Performance Analzyer}{section.4}% 12
+\BOOKMARK [2][-]{subsection.4.2}{Threads Migration Manager}{section.4}% 13
+\BOOKMARK [2][-]{subsection.4.3}{Memory Migration Manager}{section.4}% 14
+\BOOKMARK [1][-]{section.5}{Implementation}{}% 15
+\BOOKMARK [2][-]{subsection.5.1}{Online Performance Analzyer}{section.5}% 16
+\BOOKMARK [2][-]{subsection.5.2}{Threads Migration Manager}{section.5}% 17
+\BOOKMARK [2][-]{subsection.5.3}{Memory Migration Manager}{section.5}% 18
+\BOOKMARK [1][-]{section.6}{Evaluation}{}% 19
+\BOOKMARK [1][-]{section.7}{Related work}{}% 20
+\BOOKMARK [1][-]{section.8}{Conclusion}{}% 21
+\BOOKMARK [1][-]{section.9}{Prior/Concurrent Submissions}{}% 22
+\BOOKMARK [1][-]{section.10}{References}{}% 23
