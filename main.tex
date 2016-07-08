@@ -259,7 +259,7 @@ In this section, we begin with the necessity and benefits of modeling the affini
 We now discuss different affinity classes in the asymmetric access architecture. To accurately determine the affinity among vCPU, memory and network adapter, we adopt more detailed metrics to describe the access behavior in the virtualized systems.
 
 \subsubsection{VCPU to Memory Affinity}
-VCPU to memory affinity refers to the traditional NUMA affinity between VM vCPU and its memory. Based on the previous work [], we standing in the point of view of the vCPU and expect the memory access locally as much as possible. The potential for NUMA affinity of vCPU is proportional to the amount of memory access to each NUMA node. That is, if a vCPU access most to the memory of a NUMA node, it has high affinity with this node. The NUMA affinity for vCPU can be calculated with equation 1, where $A_m$ is the affinity between vCPU and each NUMA node n, $NC_k$ is a vector containing the number of memory access from vCPU k to each node, and N is the number of nodes.
+VCPU to memory affinity refers to the traditional NUMA affinity between VM vCPU and its memory. Based on the previous work [], we standing in the point of view of the vCPU and expect the memory access locally as much as possible. The potential for NUMA affinity of vCPU is proportional to the amount of memory access to each NUMA node. That is, if a vCPU access most to the memory of a NUMA node, it has high affinity with this node. The NUMA affinity for vCPU can be calculated with equation 1, where $A_m$ is the affinity between vCPU and each NUMA node n, $NC_k$ is a vector containing the accumulated number of memory access from vCPU k to each node, and N is the number of nodes.
 \begin{equation}
 A_m=max(NC_k)/(\sum_{i=1}^N NC_k^i)
 \end{equation}
@@ -377,9 +377,12 @@ As for I/O intensive virtual machines, data interacting with the host machine is
 %\end{figure*}
 
 \section{Design}
-In this section, we describe the detail design of our vNUIOA system, a platform independent system that optimizing the overheads of asymmetric access architecture. We enabling three parts for incorporating NUMA and NUIOA overheads awareness with hypervisor: namely, Runtime access analyzer, Affinity aware manager and  scheduler.
+In this section, we describe the detail design of our vNUIOA, a platform independent runtime system that optimizing the overheads of asymmetric access architecture. We enabling three parts for incorporating NUMA and NUIOA overheads awareness with hypervisor: namely, Runtime information collector, Affinity aware algorithm and Dynamic load balance scheduler.
+
 \subsection{Overview}
-An overview of vNUIOA is shown in Figure 5. It consists of the following three parts: the \textbf{\emph{runtime information collector}} modules collects host server and guest system information since the system booting, then the module classify and store these information of each VM. After these information are obtained, we build the  overheads awareness affinity model according to per-VM statistics information and the current system load. If the system load is not balanced and a certain node's load is very high, we should going to the \textbf{\emph{ threads affinity manager}} module and using I/O intensive aware migration strategy to migrate the VM vCPU threads to the appropriate NUMA node. Otherwise, the system load is balanced, we will going to the \textbf{\emph{memory affinity manager}} module to optimizing the memory affinity and achieving high performance.
+An overview of vNUIOA is shown in Figure 5. It consists of the following three parts: the \textbf{\emph{Runtime Access Analyzer}} modules collects guest os and host server information since the system booting, then the module classify and store these information of each VM. After these information is collected, we design the asymmetric access overheads awareness algorithm based on the optimal affinity model which describe in the section 3.
+
+%If the system load is not balanced and a certain node's load is very high, we should going to the \textbf{\emph{ threads affinity manager}} module and using I/O intensive aware migration strategy to migrate the VM vCPU threads to the appropriate NUMA node. Otherwise, the system load is balanced, we will going to the \textbf{\emph{memory affinity manager}} module to optimizing the memory affinity and achieving high performance.
 
 \begin{figure*}[!t]
 \centering
@@ -389,9 +392,9 @@ An overview of vNUIOA is shown in Figure 5. It consists of the following three p
 \vspace{-1em}
 \label{fig_sim}
 \end{figure*}
-\subsection{Runtime Access Analyzer}
 
-Runtime access analyzer mainly collects and analyzes the information we used in the optimal affinity modeling. To periodically collect the performance information of virtual machines and host server, it is imperative to analyze memory and I/O access activities in the virtualized system. To end this, we use the Linux  performance monitoring tool perfmon [] to detect each virtual machine's memory and I/O access activities,then we store these information in the VMinfo table. Each table entry contains information about each NUMA node access to VM pages vector(NodeAcc Vector), VM memory distribution table (VMD table) and VM I/O request times vector (VIOR Vector). The detail of these three information listed as follows:
+\subsection{Runtime information collector}
+Runtime information collector mainly collects the information we used in the optimal affinity modeling. To periodically collect the performance information of virtual machines and host server, it is imperative to analyze memory and I/O access activities in the virtualized system. To end this, we use the Linux performance monitoring tool perfmon [] to detect each virtual machine's memory and I/O access activities,then we store these information in the VMinfo table. Each table entry contains information about each NUMA node access to VM pages vector(NodeAcc Vector), VM memory distribution table (VMD table) and VM I/O request times vector (VIOR Vector). The detail of these three information listed as follows:
 \begin{table}[h]
 \caption{Definitions of collected information.}
 
@@ -399,14 +402,15 @@ Runtime access analyzer mainly collects and analyzes the information we used in 
 \hline
 \multicolumn{2}{|c|}{Per VM statistics}\\
 \hline
-VNA table &
-\tabincell{l}{VNA[n][p] records the number of\\ memory access from node n to each \\page p of the VM.} \\
+NC vector &
+\tabincell{l}{NC[n] records the accumulated \\ number of memory access from VM \\vCPU to each NUMA node.} \\
 \hline
 VMD table &
 \tabincell{l}{VMD[m][n] table describe the VM m\\ memory distribute to each node n}\\
 \hline
 VIOR vector  &
 \tabincell{l}{VIOR[m] vector records the number of \\I/O requests per second for VM m.}\\
+\hline
 \hline
 \multicolumn{2}{|c|}{Physical machine statistics}\\
 \hline
@@ -429,6 +433,18 @@ L_n=NCL_n+NML_n
 we test that when the system load per node exceed the $80\%$ of the max load, the system performance begin to goes down. Based on this experimental value, if the system load per node up to $80\%$, the load of the node is high.
 
 Because of the hop-distance result in the previous NUMA affinity modeling inaccurate, in this work, we use a more accurate system information for NUIOA affinity modeling. We measure the average access latency between NIC and every NUMA node ,then we record it in a ACL vector (\emph{ACL[n]}). Based on the ACL vector, the data transfer latency between NIC and nodes can be accurate measured and we this information in the following affinity modeling.
+\subsection{Affinity aware algorithm}
+\textbf{Step 1}: we first identify which type a virtual machine belong to, because for different type VM, we adopt different optimal function to manage affinity. We classify the VMs into I/O intensive and I/O non intensive by looking the VIOR vector(see the Table 2), the I/O request threshold is to be determined experimentally. We found that the number of I/O request for VM with running CPU intensive task is less than 100 per second and for I/O intensive task the number is more than 1000 per second, so we choose a threshold value of 500 times per second in consideration of practical application attributes.
+
+\textbf{Step 2}:calculating the optimal affinity for each VM. For different type of virtual machine, we assign different weight to the three affinity $A_m, A_n, A_b$, in this way, we can figure out optimal affinity function. I/O intensive VMs always have frequent I/O operation, so the affinity $A_n, A_b$ are more important in the optimal function, and as a result, the weight of the $A_n, A_b$ is dominant. CPU intensive VMs always read and write data with memory, in this case, the proportion of affinity $A_m$ is higher in the optimal function and we should assign a proper weight.
+
+\textbf{Step 3}: According to the calculating results in the step 2, we make the decision of memory migration and vCPU remapping. we only migrate memory when maximum number of remote node memory access is double than the number of local memory access (\emph{max(NC)>2*NC[0])}, because frequent memory migration also bring high overheads. We test several value and found that when select 2 times than the number of local access, we can achieve max benefits. The vCPU remapping also negotiate with the load balance mechanism in the system, the load of cpu core i can be calculated by $L_i=\frac{CPUtime_i}{Elapsedtime_i}$. If the average CPU load per node is higher than 80\%, we should not map any vCPU to this node and select node with low load and calculate optimal once more.
+
+%(\emph{$\sum_{i=1}^M L_i / M > 80\% $})
+
+
+
+
 
 \subsection{NUIOA Affinity Modeling}
 We now discuss the affinity modeling of NUIOA architecture. NUIOA affinity measure the Based on the evaluation of performance degradation in the section 3, we divide the entire affinity modeling into two parts: the NIC to VCPU Threads Affinity Modeling and the VCPU Threads to Memory Affinity Modeling.

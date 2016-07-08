@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.6.29)  8 JUL 2016 12:20
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.6.29)  8 JUL 2016 21:37
 entering extended mode
 **C:/Users/hacker_qian/Desktop/hpca22/hpca22-latex-template/main.tex
 (C:/Users/hacker_qian/Desktop/hpca22/hpca22-latex-template/main.tex
@@ -507,7 +507,7 @@ Overfull \hbox (10.08841pt too wide) in paragraph at lines 89--90
 UIOA
  []
 
-<NUIOA-arch.pdf, id=146, 371.3875pt x 181.67876pt>
+<NUIOA-arch.pdf, id=150, 371.3875pt x 181.67876pt>
 File: NUIOA-arch.pdf Graphic file (type pdf)
  <use NUIOA-arch.pdf>
 Package pdftex.def Info: NUIOA-arch.pdf used on input line 93.
@@ -520,7 +520,7 @@ Overfull \hbox (12.94499pt too wide) in paragraph at lines 93--95
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<VMmapping1.pdf, id=147, 338.26375pt x 285.065pt>
+<VMmapping1.pdf, id=151, 338.26375pt x 285.065pt>
 File: VMmapping1.pdf Graphic file (type pdf)
  <use VMmapping1.pdf>
 Package pdftex.def Info: VMmapping1.pdf used on input line 147.
@@ -541,7 +541,7 @@ een already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.155 
-       [2 <./NUIOA-arch.pdf>] <10-40.pdf, id=165, 642.4pt x 385.44pt>
+       [2 <./NUIOA-arch.pdf>] <10-40.pdf, id=169, 642.4pt x 385.44pt>
 File: 10-40.pdf Graphic file (type pdf)
 
 <use 10-40.pdf>
@@ -552,7 +552,7 @@ Overfull \hbox (3.8013pt too wide) in paragraph at lines 165--165
 []\subsecfnt Evaluation of Asym-met-ric I/O Ac-cess and Mem-
  []
 
-<scenario3.pdf, id=166, 665.48625pt x 146.5475pt>
+<scenario3.pdf, id=170, 665.48625pt x 146.5475pt>
 File: scenario3.pdf Graphic file (type pdf)
  <use scenario3.pdf>
 Package pdftex.def Info: scenario3.pdf used on input line 169.
@@ -584,27 +584,24 @@ een already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.255 
-       [3 <./VMmapping1.pdf> <./10-40.pdf>]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
-een already used, duplicate ignored
+       [3 <./VMmapping1.pdf> <./10-40.pdf>]pdfTeX warning (ext4): destination w
+ith the same identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.286 \begin{equation}
                        [4 <./scenario3.pdf>]
-Overfull \hbox (6.77779pt too wide) in paragraph at lines 380--381
+Overfull \hbox (9.27779pt too wide) in paragraph at lines 380--381
 []\T1/ptm/m/n/10 In this sec-tion, we de-scribe the de-tail de-sign of our vNUI
-OA
+OA,
  []
 
-<VNUIOA-Arch.pdf, id=291, 736.7525pt x 330.23375pt>
+<VNUIOA-Arch.pdf, id=295, 736.7525pt x 330.23375pt>
 File: VNUIOA-Arch.pdf Graphic file (type pdf)
  <use VNUIOA-Arch.pdf>
-Package pdftex.def Info: VNUIOA-Arch.pdf used on input line 386.
+Package pdftex.def Info: VNUIOA-Arch.pdf used on input line 389.
 (pdftex.def)             Requested size: 505.89pt x 226.75294pt.
 
-Overfull \hbox (1.89pt too wide) in paragraph at lines 386--388
+Overfull \hbox (1.89pt too wide) in paragraph at lines 389--391
  [][] 
  []
 
@@ -615,57 +612,57 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
 een already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.441 
+l.442 
        [5]
-Overfull \hbox (3.81766pt too wide) in paragraph at lines 448--449
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Overfull \hbox (3.81766pt too wide) in paragraph at lines 462--463
 []\T1/ptm/m/n/10 If this map-ping re-sult in the load im-bal-ance, then we shou
 ld
  []
 
 
-Underfull \vbox (badness 2980) has occurred while \output is active []
-
-
-Overfull \hbox (2.03722pt too wide) in paragraph at lines 463--465
+Overfull \hbox (2.03722pt too wide) in paragraph at lines 477--479
 \T1/ptm/m/n/10 We use the to-tal num-ber of mem-o-ry ac-cess from vCPU thread
- []
-
-
-Overfull \hbox (10.60756pt too wide) in paragraph at lines 477--478
-\T1/ptm/m/n/10 tu-al-ized plat-for-m. The on-line per-for-mance analzy-er, the 
-thread-
  []
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
 een already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.480 
+l.479 
        [6 <./VNUIOA-Arch.pdf>]
-Overfull \hbox (5.57736pt too wide) in paragraph at lines 494--495
+Overfull \hbox (10.60756pt too wide) in paragraph at lines 491--492
+\T1/ptm/m/n/10 tu-al-ized plat-for-m. The on-line per-for-mance analzy-er, the 
+thread-
+ []
+
+
+Overfull \hbox (5.57736pt too wide) in paragraph at lines 508--509
 \T1/ptm/m/n/10 vNUIOA with KVM's de-fault sched-uler and a hand-optimized
  []
 
 
-Overfull \hbox (1.56767pt too wide) in paragraph at lines 498--499
+Overfull \hbox (1.56767pt too wide) in paragraph at lines 512--513
 []\T1/ptm/m/n/10 All ex-per-i-ments are con-duct-ed in a 4-sockets ma-chine wit
 h
  []
 
 (main.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 541.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 555.
 pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
 een already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.541 \end{document}
+l.555 \end{document}
                      [7]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 541.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 555.
  (main.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 541.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 541.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 555.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 555.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: E971F20E7E57C88940CE3C1FA043A6B9;2439.
+(rerunfilecheck)             Checksum: 53CB8A2FF3E2243CC33BA6681C5374A4;2520.
 
 
 LaTeX Font Warning: Size substitutions with differences
@@ -674,14 +671,14 @@ LaTeX Font Warning: Size substitutions with differences
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 541.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 555.
  ) 
 Here is how much of TeX's memory you used:
- 6769 strings out of 495233
- 95373 string characters out of 3181614
+ 6774 strings out of 495233
+ 95421 string characters out of 3181614
  182492 words of memory out of 3000000
- 9879 multiletter control sequences out of 15000+200000
- 75499 words of font info for 108 fonts, out of 3000000 for 9000
+ 9880 multiletter control sequences out of 15000+200000
+ 77363 words of font info for 111 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
  41i,14n,43p,1445b,342s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:/Progra
@@ -696,9 +693,9 @@ ng/MiKTeX/2.9/fonts/type1/urw/symbol/usyr.pfb><C:/Program Files (x86)/MiKTeX 2.
 e1/urw/times/utmbi8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/tim
 es/utmr8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.
 pfb>
-Output written on main.pdf (7 pages, 269446 bytes).
+Output written on main.pdf (7 pages, 271835 bytes).
 PDF statistics:
- 387 PDF objects out of 1000 (max. 8388607)
- 54 named destinations out of 1000 (max. 500000)
- 290 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 392 PDF objects out of 1000 (max. 8388607)
+ 55 named destinations out of 1000 (max. 500000)
+ 298 words of extra memory for PDF output out of 10000 (max. 10000000)
 
