@@ -11,6 +11,7 @@
 \usepackage[normalem]{ulem}
 \usepackage[hyphens]{url}
 \usepackage{hyperref}
+\usepackage{multirow}
 
 
 %%%%%%%%%%%---SETME-----%%%%%%%%%%%%%
@@ -62,7 +63,7 @@ Although previous studies presented several affinity models to optimizing NUMA s
 \vspace{1ex}
 
 \begin{itemize}
-\item Existing NUMA affinity models are 2-dimension and mainly focusing on the memory and virtual CPU locality, the consideration of high speed interconnections affinity such as I/O devices locality are poor. since almost the cloud space applications frequent transfer data with high speed I/O devices, current affinity model must take I/O into consideration.
+\item Existing NUMA affinity models are 2-dimension and mainly focusing on the memory and virtual CPU locality, the consideration of high speed interconnections affinity such as I/O devices locality are poor. since almost the cloud space applications frequent transfer data with high speed I/O devices, current affinity model must take I/O devices into consideration.
 \item Many traditional NUMA performance model use the hop distance to introduce the access penalty between two devices. However, hop distance is not accurate for modeling, especially for the I/O performance modeling due to: First, the hop distance contain less details about the underlying topology such as the access latency, so it can not be used in the accurate performance measurement. Second, hop distance always be a constant in the system. When the performance of the system changing in real time, the hop distance can not reflect this change and cause the performance prediction inaccurate.
 \item Furthermore, previous work only optimizing the Non-Uniform I/O access by performance tuning. They just binding the virtual machine threads and its memory together to the I/O device attached nodes to ensure local I/O access. This static method is not always efficient because too many threads in one node will increase the CPU load and hurt the performance significantly when the system load is too high.
 %\item References must include all authors to facilitate the reviewing process (no \emph{et al.})Papers must be at most 11 pages, not including references, in two-column format.Paper must be submitted in printable PDF format.Text must be minimum 10pt Times font.
@@ -80,12 +81,12 @@ This paper is organized as follows: Section 2 provides an overview of NUIOA arch
 In this section, we begin with a brief introduction to asymmetric access architecture in multicore systems, Then we show performance degradation due to asymmetric access in high performance network environment. Lastly, we talk about that virtualization also aggravate the performance degradation.
 \subsection{Asymmetric Access in Multicore Syetems}
 %Performance Degradation in NUMA Architecture with High Speed Network Adapter
-Traditional multicore processor shared with one memory controller. With the number of cores per socket increases, one memory controller results in high memory controller contention and bandwidth competition. In order to improve the utilization of multicore system, each CPU socket has been designed with its own integrated memory controller (IMC) which have faster access to local memory bank than the remote ones. This Non-Uniform Memory Access (NUMA) characteristic fully take advantage of multicore system and high speed memory bandwidth.
+\textbf{\emph{Asymmetric Memory Access}}:Traditional multicore processor shared with one memory controller. With the number of cores per socket increases, one memory controller results in high memory controller contention and bandwidth competition. In order to improve the utilization of multicore system, each CPU socket has been designed with its own integrated memory controller (IMC) which have faster access to local memory bank than the remote ones. This Non-Uniform Memory Access (NUMA) characteristic fully take advantage of multicore system and high speed memory bandwidth.
 
 %In order to move data fast enough to keep up with today's processors in the virtualized system, I/O devices also should be virtualized and to be shared by multiple virtual machines. In traditional para-virtualization, when a guest VM accesses the I/O device, VMM needs to intervene the data processing to share the physical device. this extra VMM intervention bring additional overhead which tremendously affect the I/O performance of guest VMs. Single Root I/O virtualization (SR-IOV) [] proposes a set a hardware enhancements for PCIe device. SR-IOV enable to create multiple "lightweight" PCIe functions,known as virtual Functions (VFs) that still contain the major device resources. In this work, we mainly consider SR-IOV because With the hardware enhancement, SRIOV remove the major VMM intervention and achieve I/O virtualization without losing performance.
 
 %With the data transfer speed of current network adapter become higher and higher, such as Mellanox 40,56 and 100 Gigabit Ethernet adapter [] is being adopted broadly in the data center. The speed of these network adapter is higher than the memory bandwidth and resulting in shifting system bottleneck from remote memory access to asymmetric I/O access in the NUMA architecture.
-Besides the asymmetric memory access, this architecture also result in asymmetric accesses of other devices. One of the most important one is I/O devices, because I/O devices are also directly connected to one or more nodes in the multicore system. local cores and devices have privilegiert access to the I/O device, remote ones must use interconnection to transfer data to the I/O devices, resulting in extra inter-node bandwidth occupation and access latency. This asymmetry I/O access is called Non-Uniform I/O Access (NUIOA)[]. AMD processors have exhibited NUIOA effects when AMD introduced the OPTERON processor in 2003 [], Intel processors have began to appear NUIOA characteristic when the advent of \emph{sandy-bridge} architecture in 2011 []. Figure 1 shows a ubiquitous four-sockets NUIOA architecture based on the Intel Xeon E5 Family processors. Each socket consists of eight cores that share the last level cache (L3 cache), memory controller and physical memory bank. sockets link with each other via a high-speed, point-to-point interconnection such as Intel Quick Path Interconnect (QPI)[]. Network adapter is directly attached to the socket 0 with the Intel Data Direct I/O (DDIO) technology [], consequently, data transfer remotely to other sockets and increase access latency and bandwidth consumption.
+\textbf{\emph{Asymmetric I/O Access}}:Besides the asymmetric memory access, this architecture also result in asymmetric accesses of other devices. One of the most important one is I/O devices, because I/O devices are also directly connected to one or more nodes in the multicore system. local cores and devices have privilegiert access to the I/O device, remote ones must use interconnection to transfer data to the I/O devices, resulting in extra inter-node bandwidth occupation and access latency. This asymmetry I/O access is called Non-Uniform I/O Access (NUIOA)[]. AMD processors have exhibited NUIOA effects when AMD introduced the OPTERON processor in 2003 [], Intel processors have began to appear NUIOA characteristic when the advent of \emph{sandy-bridge} architecture in 2011 []. Figure 1 shows a ubiquitous four-sockets NUIOA architecture based on the Intel Xeon E5 Family processors. Each socket consists of eight cores that share the last level cache (L3 cache), memory controller and physical memory bank. sockets link with each other via a high-speed, point-to-point interconnection such as Intel Quick Path Interconnect (QPI)[]. Network adapter is directly attached to the socket 0 with the Intel Data Direct I/O (DDIO) technology [], consequently, data transfer remotely to other sockets and increase access latency and bandwidth consumption.
 
 \begin{figure}[h]
 \centering
@@ -107,14 +108,15 @@ Besides the asymmetric memory access, this architecture also result in asymmetri
 
 \subsection{Performance Degradation Due to Asymmetric Access}
 %With the data transfer speed of current network adapter become higher and higher, such as Mellanox 40,56 and 100 Gigabit Ethernet adapter [] is being adopted broadly in the data center. The speed of these network adapter is higher than the memory bandwidth and resulting in shifting system bottleneck from remote memory access to asymmetric I/O access in the NUMA architecture. I/O device is directly connected to one or more nodes in the multicore system, local cores and devices have privilegiert access to the I/O device, remote ones must use interconnection to transfer data to the I/O devices, resulting in extra inter-node bandwidth occupation and access latency. This asymmetry I/O access is called Non-Uniform I/O Access (NUIOA). Figure 2 shows a ubiquitous four-sockets NUIOA architecture based on the Intel Xeon E5 Family processors. Each socket consists of eight cores that share the last level cache (L3 cache), memory controller and physical memory bank. sockets link with each other via a high-speed, point-to-point interconnection such as Intel Quick Path Interconnect (QPI)[]. Network adapter is directly attached to the socket 0 with the Intel Data Direct I/O (DDIO) technology [] which could directly sent data to the cache instead of memory, consequently, data transfer remotely to other sockets and increase access latency and bandwidth consumption.
-With the data transfer speed of current network adapter become higher and higher, such as Mellanox 40,56 and 100 Gigabit Ethernet adapter [] is being adopted broadly in the data center. The speed of these network adapter is higher than the memory and interconnection bandwidth, and result in shifting of system bottleneck from asymmetric memory access to asymmetric I/O access in the NUMA architecture. Finally, without consideration of the asymmetric I/O access in high speed networking environment, the performance of data center servers degrade significantly. To measure the Performance degradation due to asymmetric access, we conduct a set of experiments. First we evaluate the performance degradation of asymmetric I/O Access independently, then we combine asymmetric memory access and asymmetric I/O access and study the factors of performance degradation.
+\subsubsection{Moving from 10GbE to 40GbE}
+With the data transfer speed of current network adapter become higher and higher, such as Mellanox 40 and 56 Gigabit Ethernet adapter [] is being adopted broadly in the data center. The speed of these network adapter is higher than the memory and interconnection bandwidth, and result in shifting of system bottleneck from asymmetric memory access to asymmetric I/O access in the NUMA architecture. Finally, without consideration of the asymmetric I/O access in high speed networking environment, the performance of data center servers degrade significantly. To measure the Performance degradation due to asymmetric access, we conduct a set of experiments. First we evaluate the performance degradation of asymmetric I/O Access independently, then we combine asymmetric memory access and asymmetric I/O access and study the factors of performance degradation.
 
 Table 1 shows the configuration details of our test hardware. We select Netperf [] benchmark provides network bandwidth testing between two host on a network.
 
 \begin{table}[h]
 \caption{Configuration details of our test server.}
 
-\begin{tabular}{ll}
+\begin{tabular}{|l|l|}
 \hline
 Item &
 Configuration \\
@@ -280,11 +282,12 @@ A_b=max(D^m_0)/(\sum_{i=1}^N D^m_i)
 This affinity achieve best when we allocate the VM memory on the node near to the NIC as much as possible.
 
 \subsection{Optimal Affinity Model Function}
-After calculate these three classes of affinity metric, we now discuss the optimal affinity model. In consideration of complexity in the virtualized envionment, we first simply defined our optimal affinity model function as follows:
+After calculate these three classes of affinity metric, we now discuss the optimal affinity model. In consideration of complexity in the virtualized environment, we first simply defined our optimal affinity model function as follows:
 \begin{equation}
 max\ f(A_m, A_n, A_b)
 \end{equation}
 
+As for I/O intensive virtual machines, data interacting with the host machine is frequently. When the NIC receives a large amount of packets, interrupts raising from the NIC also handled by the vCPU of the VM, packets were copied to the memory buffers by using DMA. In this case, the asymmetric I/O accesses are main factors which influencing the performance, our model function focus on optimizing the affinity $A_n$ and $A_b$. As for CPU intensive virtual machine, the vCPU threads frequently access memory to read and write data. In this case, the main factor resulting in the performance degradation is asymmetric memory access, our model function should focus on optimizing the affinity $A_m$.
 %\subsection{Experimental Environment}
 %different access to directly attached devices affect the performance of the workload in virtualized environment, especially with the different I/O access patten.
 %All experiments are conducted in a 4-sockets machine with Mellanox ConnectX-3 40 GigE adapter placed on the PCIe Gen3 x16 slots which directly connect to the socket 0. Each socket contains a Intel Xeon E5 4610 v2(Ivy Bridge architecture) processor and 32GB DDR3 memory bank. Each processor with 8 cores running at 2.3GHz and max turbo frequency can up to 2.7GHz. Each core has 32KB L1 data cache and 32KB L1 instruction cache, 256KB L2 cache and 16MB last level cache (LLC). Each socket equipped with 2 ways QPI with the communication speed 7.2GT/s. In our experiments, we enable the Intel Hyper-threading [](16 logical cores per socket). Therefor, we have total 64 cores and 128GB memory. we also configure the storage with 300G disk, the experiment configuration details are listed in the table 1.
@@ -331,7 +334,7 @@ max\ f(A_m, A_n, A_b)
 %\end{tabular}
 %
 %\end{table}
- %Reviewing will be double-blind; therefore, please do not include any author names on any submitted documents except in the space provided on the submission form. You must also ensure that the metadata included in the PDF does not give away the authors. If you are improving upon your prior work, refer to your prior work in the third person and include a full citation for the work in the bibliography. For example, if you are building on your own prior work in the papers~\cite{nicepaper1,nicepaper2,nicepaper3}, you would say something like: ``While prior work did X, Y, and Z~\cite{nicepaper1,nicepaper2,nicepaper3}, this paper additionally does W, and is therefore much better.'' Do not omit or anonymize references for blind review. There is one exception to this for your own prior work that appeared in IEEE CAL, workshops without archived proceedings, etc., as discussed later in this document.
+%Reviewing will be double-blind; therefore, please do not include any author names on any submitted documents except in the space provided on the submission form. You must also ensure that the metadata included in the PDF does not give away the authors. If you are improving upon your prior work, refer to your prior work in the third person and include a full citation for the work in the bibliography. For example, if you are building on your own prior work in the papers~\cite{nicepaper1,nicepaper2,nicepaper3}, you would say something like: ``While prior work did X, Y, and Z~\cite{nicepaper1,nicepaper2,nicepaper3}, this paper additionally does W, and is therefore much better.'' Do not omit or anonymize references for blind review. There is one exception to this for your own prior work that appeared in IEEE CAL, workshops without archived proceedings, etc., as discussed later in this document.
 
 %Recall that, per IEEE authorship guidelines, it is not acceptable to award honorary authorship or gift authorship. Please keep these guidelines in mind while determining the author list of your paper. Also please note that addition/removal of authors once the paper is accepted will have to be approved by the Program Chair.
 
@@ -374,9 +377,10 @@ max\ f(A_m, A_n, A_b)
 %\end{figure*}
 
 \section{Design}
-In this section, we describe the detail design of our vNUIOA system. We enabling three parts for incorporating NUIOA overheads awareness with hypervisor: namely, online performance analzyer, VM threads affinity manager and VM memory affinity manger.
+In this section, we describe the detail design of our vNUIOA system, a platform independent system that optimizing the overheads of asymmetric access architecture. We enabling three parts for incorporating NUMA and NUIOA overheads awareness with hypervisor: namely, Runtime access analyzer, Affinity aware manager and  scheduler.
 \subsection{Overview}
-An overview of vNUIOA is shown in Figure 5. It consists of the following three parts: the \textbf{\emph{runtime performance monitor}} modules collects host server and guest system information since the system booting, then the module classify and store these information of each VM. After these information are obtained, we build the NUIOA overheads awareness affinity model according to per-VM statistics information and the current system load. If the system load is not balanced and a certain node's load is very high, we should going to the \textbf{\emph{ threads affinity manager}} module and using I/O intensive aware migration strategy to migrate the VM vCPU threads to the appropriate NUMA node. Otherwise, the system load is balanced, we will going to the \textbf{\emph{memory affinity manager}} module to optimizing the memory affinity and achieving high performance.
+An overview of vNUIOA is shown in Figure 5. It consists of the following three parts: the \textbf{\emph{runtime information collector}} modules collects host server and guest system information since the system booting, then the module classify and store these information of each VM. After these information are obtained, we build the  overheads awareness affinity model according to per-VM statistics information and the current system load. If the system load is not balanced and a certain node's load is very high, we should going to the \textbf{\emph{ threads affinity manager}} module and using I/O intensive aware migration strategy to migrate the VM vCPU threads to the appropriate NUMA node. Otherwise, the system load is balanced, we will going to the \textbf{\emph{memory affinity manager}} module to optimizing the memory affinity and achieving high performance.
+
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=7.0in]{VNUIOA-Arch.pdf}
@@ -385,13 +389,38 @@ An overview of vNUIOA is shown in Figure 5. It consists of the following three p
 \vspace{-1em}
 \label{fig_sim}
 \end{figure*}
-\subsection{Runtime Performance monitor}
-To periodically collect the performance information of virtual machines and host server, it is imperative to analyze memory and threads activities of all the nodes. To end this, we use the Linux  performance monitoring tool perfmon [] to detect each virtual machine's memory and threads activities and store these information in the VMinfo table. Each table entry contains information about each NUMA node access to VM pages vector(NodeAcc Vector), VM memory distribution table (VMD table) and VM I/O request times vector (VIOR Vector). The detail of these three information listed as follows:
-\begin{itemize}
-  \item \textbf{NodeAcc vector}: The \emph{NodeAcc[n][p]} records the number of memory access from node n to each page p of the VM. The OS has a methods to measure if the pages has been accessed by the page fault, While the page is not set as present in the page table, the OS is noticed about the faulting virtual address, as well as the thread ID that caused the fault. By tracking page faults, it possible to detect which vCPU threads are accessing the memory page. We apply this memory access vector to vCPU thread to memory affinity modeling.
-  \item \textbf{VMD table}: The VM memory distribution table, denoted as \emph{VMD$\left[m\right]\left[n\right]$}, collects the number of VM m memory references to NUMA node n. We analysis the VM guest physical address (GPA) and translate it to host physical address (HPA). Based on the HPA, we can obtain the distribution of virtual machine memory to the physical server nodes. The VMD table provide data distribution information for our NIC to vCPU thread affinity modeling.
-  \item \textbf{VIOR vector}:The virtual machine I/O request times vector records the I/O request times per second. This information used to identify whether the virtual machine is I/O intensive. If the I/O operations of a virtual machine are too frequent, we should take a special consideration of these kinds of virtual machine in the NIC to vCPU thread affinity modeling.
-\end{itemize}
+\subsection{Runtime Access Analyzer}
+
+Runtime access analyzer mainly collects and analyzes the information we used in the optimal affinity modeling. To periodically collect the performance information of virtual machines and host server, it is imperative to analyze memory and I/O access activities in the virtualized system. To end this, we use the Linux  performance monitoring tool perfmon [] to detect each virtual machine's memory and I/O access activities,then we store these information in the VMinfo table. Each table entry contains information about each NUMA node access to VM pages vector(NodeAcc Vector), VM memory distribution table (VMD table) and VM I/O request times vector (VIOR Vector). The detail of these three information listed as follows:
+\begin{table}[h]
+\caption{Definitions of collected information.}
+
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|c|}{Per VM statistics}\\
+\hline
+VNA table &
+\tabincell{l}{VNA[n][p] records the number of\\ memory access from node n to each \\page p of the VM.} \\
+\hline
+VMD table &
+\tabincell{l}{VMD[m][n] table describe the VM m\\ memory distribute to each node n}\\
+\hline
+VIOR vector  &
+\tabincell{l}{VIOR[m] vector records the number of \\I/O requests per second for VM m.}\\
+\hline
+\multicolumn{2}{|c|}{Physical machine statistics}\\
+\hline
+
+\end{tabular}
+\end{table}
+
+
+
+%\begin{itemize}
+%  \item \textbf{NodeAcc vector}: The \emph{NodeAcc[n][p]} records the number of memory access from node n to each page p of the VM. The OS has a methods to measure if the pages has been accessed by the page fault, While the page is not set as present in the page table, the OS is noticed about the faulting virtual address, as well as the thread ID that caused the fault. By tracking page faults, it possible to detect which vCPU threads are accessing the memory page. We apply this memory access vector to vCPU thread to memory affinity modeling.
+%  \item \textbf{VMD table}: The VM memory distribution table, denoted as \emph{VMD$\left[m\right]\left[n\right]$}, collects the number of VM m memory references to NUMA node n. We analysis the VM guest physical address (GPA) and translate it to host physical address (HPA). Based on the HPA, we can obtain the distribution of virtual machine memory to the physical server nodes. The VMD table provide data distribution information for our NIC to vCPU thread affinity modeling.
+%  \item \textbf{VIOR vector}:The virtual machine I/O request times vector records the I/O request times per second. This information used to identify whether the virtual machine is I/O intensive. If the I/O operations of a virtual machine are too frequent, we should take a special consideration of these kinds of virtual machine in the NIC to vCPU thread affinity modeling.
+%\end{itemize}
 
 System load balance is also important for performance of physical server. As shown in the section 3.2.1, physical machine system load imbalance will cause a huge performance degradation. So in our design, we must take the system load into consideration. In this paper, we mainly consider two kinds of system load of each NUMA node,the per-node CPU load \emph{NCL$_n$} and the per-node memory load \emph{NML$_n$}. These two kinds of load can be calculate as follows:
 \begin{equation}
@@ -449,9 +478,12 @@ We implemented the vNUIOA prototype in the KVM virtualized platform. The online 
 
 We use the KVM 2.0.0 as virtual machine monitor with the Intel VT-d and VT-x technology enable. Each VM run the Ubuntu 14.04LTS system and configured with one vCPUs and 1GB memory. In order to achieve high performance I/O virtualization, we enable SR-IOV technology and assigned a virtual function to each VM. We select a set of I/O and memory performance testing benchmarks,listed as table 2. The Netperf [] benchmark provides network bandwidth testing between two host on a network. Memcached [] is an in-memory key-value store for small chunks of arbitrary data to improve the performance of cloud applications.
 
-\subsection{Online Performance Analyzer}
-The performance analyzer accesses the hardware performance counters via Linux performance monitor tool \emph{perfmon}. We using
-As for number of I/O request per second, we count the execution number of $ixgbevf\_clean\_tx\_irq$ or $ixgbevf\_clean\_rx\_irq$ function for every second. Because every time a VM handles a packet, the SR-IOV vf driver invokes these two functions.
+\subsection{Techniques for Information Collection}
+\textbf{\emph{Using page faults measure memory accesses}}: The OS has a methods to measure if the pages has been accessed by the page fault, While the page is not set as present in the page table, the OS is noticed about the faulting virtual address, as well as the thread ID that caused the fault. By tracking page faults, it possible to detect which vCPU threads are accessing the memory page. The performance analyzer accesses the hardware performance counters via Linux performance monitor tool \emph{perfmon}. We using
+
+\textbf{\emph{Counting I/O requests per second}}: As for the number of I/O request per second, we count the execution number of $ixgbevf\_clean\_tx\_irq$ or $ixgbevf\_clean\_rx\_irq$ function for every second. Because every time a VM handles a packet, the SR-IOV vf driver invokes these two functions.
+
+\textbf{\emph{Migrating pages via system call}}: After determine memory migration, we use the \emph{numa\_migrate\_pages()} system call to migrate all pages of the specified process from one node to another node. This system call supported by \textbf{libnuma} in the \textbf{numactl} package.
 
 
 \subsection{Threads Migration Manager}
