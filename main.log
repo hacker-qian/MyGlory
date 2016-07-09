@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.6.29)  8 JUL 2016 21:37
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.6.29)  9 JUL 2016 23:06
 entering extended mode
 **C:/Users/hacker_qian/Desktop/hpca22/hpca22-latex-template/main.tex
 (C:/Users/hacker_qian/Desktop/hpca22/hpca22-latex-template/main.tex
@@ -362,6 +362,34 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\multirow\multirow.sty"
 \bigstrutjot=\dimen130
+)
+(C:\Users\hacker_qian\AppData\Roaming\MiKTeX\2.9\tex\latex\algorithms\algorithm
+ic.sty
+Package: algorithmic 2009/08/24 v0.1 Document Style `algorithmic'
+ ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\ifthen.sty"
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+)
+\c@ALC@unique=\count119
+\c@ALC@line=\count120
+\c@ALC@rem=\count121
+\c@ALC@depth=\count122
+\ALC@tlm=\skip55
+\algorithmicindent=\skip56
+)
+(C:\Users\hacker_qian\AppData\Roaming\MiKTeX\2.9\tex\latex\algorithms\algorithm
+.sty
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
+nment
+ ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\float\float.sty"
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count123
+\float@exts=\toks35
+\float@box=\box33
+\@float@everytoks=\toks36
+\@floatcapt=\box34
+)
+\@float@every@algorithm=\toks37
+\c@algorithm=\count124
 ) (main.aux
 
 LaTeX Warning: Label `fig_sim' multiply defined.
@@ -378,37 +406,37 @@ LaTeX Warning: Label `fig_sim' multiply defined.
 )
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 28.
-LaTeX Font Info:    ... okay on input line 28.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 28.
-LaTeX Font Info:    ... okay on input line 28.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 28.
-LaTeX Font Info:    ... okay on input line 28.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 28.
-LaTeX Font Info:    ... okay on input line 28.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 28.
-LaTeX Font Info:    ... okay on input line 28.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 28.
-LaTeX Font Info:    ... okay on input line 28.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 28.
-LaTeX Font Info:    ... okay on input line 28.
-LaTeX Font Info:    Try loading font information for T1+ptm on input line 28.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Try loading font information for T1+ptm on input line 29.
  ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\psnfss\t1ptm.fd"
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 )
 (C:\Users\hacker_qian\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count119
+\scratchcounter=\count125
 \scratchdimen=\dimen131
-\scratchbox=\box33
-\nofMPsegments=\count120
-\nofMParguments=\count121
-\everyMPshowfont=\toks35
-\MPscratchCnt=\count122
+\scratchbox=\box35
+\nofMPsegments=\count126
+\nofMParguments=\count127
+\everyMPshowfont=\toks38
+\MPscratchCnt=\count128
 \MPscratchDim=\dimen132
-\MPnumerator=\count123
-\makeMPintoPDFobject=\count124
-\everyMPtoPDFconversion=\toks36
+\MPnumerator=\count129
+\makeMPintoPDFobject=\count130
+\everyMPtoPDFconversion=\toks39
 ) ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\oberdiek\epstopdf-base.sty"
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 
@@ -420,71 +448,71 @@ Package grfext Info: Graphics extension search list:
 G,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 456.
 )
-\AtBeginShipoutBox=\box34
+\AtBeginShipoutBox=\box36
 
 
 Package hyperref Warning: Height of page (\paperheight) is invalid (0.0pt),
 (hyperref)                using 11in.
 
-Package hyperref Info: Link coloring OFF on input line 28.
+Package hyperref Info: Link coloring OFF on input line 29.
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\hyperref\nameref.sty"
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\gettitlestring.sty"
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count125
+\c@section@level=\count131
 )
-LaTeX Info: Redefining \ref on input line 28.
-LaTeX Info: Redefining \pageref on input line 28.
-LaTeX Info: Redefining \nameref on input line 28.
+LaTeX Info: Redefining \ref on input line 29.
+LaTeX Info: Redefining \pageref on input line 29.
+LaTeX Info: Redefining \nameref on input line 29.
 
 (main.out) (main.out)
 \@outlinefile=\write3
 \openout3 = `main.out'.
 
-LaTeX Font Info:    Try loading font information for OT1+ztmcm on input line 30
+LaTeX Font Info:    Try loading font information for OT1+ztmcm on input line 31
 .
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\psnfss\ot1ztmcm.fd"
 File: ot1ztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for OML+ztmcm on input line 30
+LaTeX Font Info:    Try loading font information for OML+ztmcm on input line 31
 .
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\psnfss\omlztmcm.fd"
 File: omlztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for OMS+ztmcm on input line 30
+LaTeX Font Info:    Try loading font information for OMS+ztmcm on input line 31
 .
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\psnfss\omsztmcm.fd"
 File: omsztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for OMX+ztmcm on input line 30
+LaTeX Font Info:    Try loading font information for OMX+ztmcm on input line 31
 .
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\psnfss\omxztmcm.fd"
 File: omxztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for U+lasy on input line 30.
+LaTeX Font Info:    Try loading font information for U+lasy on input line 31.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\ulasy.fd"
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 30.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 31.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\psnfss\ot1ptm.fd"
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 30.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 31.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 30.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 31.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 30.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 31.
 
-Overfull \hbox (1.8479pt too wide) in paragraph at lines 42--44
+Overfull \hbox (1.8479pt too wide) in paragraph at lines 43--45
 \T1/ptm/m/n/10 hard-ware de-vices than the re-mote ones, such as Non-Uniform
  []
 
@@ -492,46 +520,46 @@ Overfull \hbox (1.8479pt too wide) in paragraph at lines 42--44
 
 
 ]
-Overfull \hbox (3.77809pt too wide) in paragraph at lines 81--82
+Overfull \hbox (3.77809pt too wide) in paragraph at lines 82--83
 \T1/ptm/m/n/10 high per-for-mance net-work en-vi-ron-men-t. Last-ly, we talk ab
 out
  []
 
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 84.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 85.
 LaTeX Font Info:    Font shape `T1/ptm/bx/it' in size <10> not available
-(Font)              Font shape `T1/ptm/b/it' tried instead on input line 84.
+(Font)              Font shape `T1/ptm/b/it' tried instead on input line 85.
 
-Overfull \hbox (10.08841pt too wide) in paragraph at lines 89--90
+Overfull \hbox (10.08841pt too wide) in paragraph at lines 90--91
 \T1/ptm/m/n/10 ces-sor in 2003 [], In-tel pro-ces-sors have be-gan to ap-pear N
 UIOA
  []
 
-<NUIOA-arch.pdf, id=150, 371.3875pt x 181.67876pt>
+<NUIOA-arch.pdf, id=138, 371.3875pt x 181.67876pt>
 File: NUIOA-arch.pdf Graphic file (type pdf)
  <use NUIOA-arch.pdf>
-Package pdftex.def Info: NUIOA-arch.pdf used on input line 93.
+Package pdftex.def Info: NUIOA-arch.pdf used on input line 94.
 (pdftex.def)             Requested size: 252.94499pt x 123.7395pt.
 
-Overfull \hbox (12.94499pt too wide) in paragraph at lines 93--95
+Overfull \hbox (12.94499pt too wide) in paragraph at lines 94--96
  [][] 
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<VMmapping1.pdf, id=151, 338.26375pt x 285.065pt>
+<VMmapping1.pdf, id=139, 338.26375pt x 285.065pt>
 File: VMmapping1.pdf Graphic file (type pdf)
  <use VMmapping1.pdf>
-Package pdftex.def Info: VMmapping1.pdf used on input line 147.
+Package pdftex.def Info: VMmapping1.pdf used on input line 148.
 (pdftex.def)             Requested size: 252.94499pt x 213.17186pt.
 
-Overfull \hbox (12.94499pt too wide) in paragraph at lines 147--149
+Overfull \hbox (12.94499pt too wide) in paragraph at lines 148--150
  [][] 
  []
 
 
-Overfull \hbox (8.8574pt too wide) in paragraph at lines 154--155
+Overfull \hbox (8.8574pt too wide) in paragraph at lines 155--156
 \T1/ptm/m/n/10 kind-s map-ping s-trate-gies with In-tel 10 Gi-ga-bit Eth-er-net
  adapter
  []
@@ -540,42 +568,54 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
 een already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.155 
-       [2 <./NUIOA-arch.pdf>] <10-40.pdf, id=169, 642.4pt x 385.44pt>
+l.156 
+       [2pdfTeX warning (ext4): destination with the same identifier (name{figu
+re.1}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.156 
+      pdfTeX warning (ext4): destination with the same identifier (name{table.1
+}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.156 
+       <./NUIOA-arch.pdf>] <10-40.pdf, id=157, 642.4pt x 385.44pt>
 File: 10-40.pdf Graphic file (type pdf)
 
 <use 10-40.pdf>
-Package pdftex.def Info: 10-40.pdf used on input line 158.
+Package pdftex.def Info: 10-40.pdf used on input line 159.
 (pdftex.def)             Requested size: 231.26378pt x 138.75829pt.
 
-Overfull \hbox (3.8013pt too wide) in paragraph at lines 165--165
+Overfull \hbox (3.8013pt too wide) in paragraph at lines 166--166
 []\subsecfnt Evaluation of Asym-met-ric I/O Ac-cess and Mem-
  []
 
-<scenario3.pdf, id=170, 665.48625pt x 146.5475pt>
-File: scenario3.pdf Graphic file (type pdf)
- <use scenario3.pdf>
-Package pdftex.def Info: scenario3.pdf used on input line 169.
-(pdftex.def)             Requested size: 505.89pt x 111.40407pt.
+<scenario.pdf, id=158, 670.505pt x 146.5475pt>
+File: scenario.pdf Graphic file (type pdf)
+ <use scenario.pdf>
+Package pdftex.def Info: scenario.pdf used on input line 170.
+(pdftex.def)             Requested size: 505.89pt x 110.56775pt.
 
-Overfull \hbox (1.89pt too wide) in paragraph at lines 169--171
+Overfull \hbox (1.89pt too wide) in paragraph at lines 170--172
  [][] 
  []
 
 
-Overfull \hbox (2.14793pt too wide) in paragraph at lines 187--189
+Overfull \hbox (2.14793pt too wide) in paragraph at lines 188--190
 \T1/ptm/m/n/10 sig-nif-i-cant-ly in to-day's high speed net-work en-vi-ron-men-
 t. Vir-
  []
 
 
-Overfull \hbox (6.92818pt too wide) in paragraph at lines 187--189
+Overfull \hbox (6.92818pt too wide) in paragraph at lines 188--190
 \T1/ptm/m/n/10 affin-i-ty a-mong the vCPU, mem-o-ry and net-work adapter. These
 
  []
 
 
-Overfull \hbox (14.76735pt too wide) in paragraph at lines 250--250
+Overfull \hbox (14.76735pt too wide) in paragraph at lines 251--251
 []\secfnt ANALYSIS OF OP-TI-MAL AFFIN-I-TY MOD-
  []
 
@@ -583,119 +623,147 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
 een already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.255 
-       [3 <./VMmapping1.pdf> <./10-40.pdf>]pdfTeX warning (ext4): destination w
-ith the same identifier (name{page.}) has been already used, duplicate ignored
+l.256 
+       [3pdfTeX warning (ext4): destination with the same identifier (name{figu
+re.2}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.256 
+      pdfTeX warning (ext4): destination with the same identifier (name{figure.
+3}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.256 
+       <./VMmapping1.pdf> <./10-40.pdf>]
+Underfull \vbox (badness 1383) has occurred while \output is active []
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
+een already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.286 \begin{equation}
-                       [4 <./scenario3.pdf>]
-Overfull \hbox (9.27779pt too wide) in paragraph at lines 380--381
+l.283 \end{equation}
+                     [4pdfTeX warning (ext4): destination with the same identif
+ier (name{figure.4}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.283 \end{equation}
+                     <./scenario.pdf>]
+Overfull \hbox (9.27779pt too wide) in paragraph at lines 394--395
 []\T1/ptm/m/n/10 In this sec-tion, we de-scribe the de-tail de-sign of our vNUI
 OA,
  []
 
-<VNUIOA-Arch.pdf, id=295, 736.7525pt x 330.23375pt>
+<VNUIOA-Arch.pdf, id=288, 736.7525pt x 330.23375pt>
 File: VNUIOA-Arch.pdf Graphic file (type pdf)
  <use VNUIOA-Arch.pdf>
-Package pdftex.def Info: VNUIOA-Arch.pdf used on input line 389.
+Package pdftex.def Info: VNUIOA-Arch.pdf used on input line 403.
 (pdftex.def)             Requested size: 505.89pt x 226.75294pt.
 
-Overfull \hbox (1.89pt too wide) in paragraph at lines 389--391
+Overfull \hbox (1.89pt too wide) in paragraph at lines 403--405
  [][] 
  []
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
+een already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.459 
+       [5pdfTeX warning (ext4): destination with the same identifier (name{tabl
+e.2}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.459 
+      ]
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
+put line 468.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
-een already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.442 
-       [5]
-Underfull \vbox (badness 10000) has occurred while \output is active []
 
-
-Overfull \hbox (3.81766pt too wide) in paragraph at lines 462--463
-[]\T1/ptm/m/n/10 If this map-ping re-sult in the load im-bal-ance, then we shou
-ld
- []
-
-
-Overfull \hbox (2.03722pt too wide) in paragraph at lines 477--479
-\T1/ptm/m/n/10 We use the to-tal num-ber of mem-o-ry ac-cess from vCPU thread
- []
-
-pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
-een already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.479 
-       [6 <./VNUIOA-Arch.pdf>]
-Overfull \hbox (10.60756pt too wide) in paragraph at lines 491--492
+Overfull \hbox (10.60756pt too wide) in paragraph at lines 568--569
 \T1/ptm/m/n/10 tu-al-ized plat-for-m. The on-line per-for-mance analzy-er, the 
 thread-
  []
 
 
-Overfull \hbox (5.57736pt too wide) in paragraph at lines 508--509
+Overfull \hbox (5.13751pt too wide) in paragraph at lines 570--571
+\T1/ptm/m/n/10 "lightweight" P-CIe func-tion-s,known as vir-tu-al Func-tion-s (
+VF-
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
+een already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.571 
+       [6pdfTeX warning (ext4): destination with the same identifier (name{figu
+re.5}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.571 
+       <./VNUIOA-Arch.pdf>]
+Overfull \hbox (5.57736pt too wide) in paragraph at lines 586--587
 \T1/ptm/m/n/10 vNUIOA with KVM's de-fault sched-uler and a hand-optimized
  []
 
 
-Overfull \hbox (1.56767pt too wide) in paragraph at lines 512--513
+Overfull \hbox (1.56767pt too wide) in paragraph at lines 590--591
 []\T1/ptm/m/n/10 All ex-per-i-ments are con-duct-ed in a 4-sockets ma-chine wit
 h
  []
 
 (main.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 555.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 634.
 pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
 een already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.555 \end{document}
+l.634 \end{document}
                      [7]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 555.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 634.
  (main.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 555.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 555.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 634.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 634.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 53CB8A2FF3E2243CC33BA6681C5374A4;2520.
-
-
-LaTeX Font Warning: Size substitutions with differences
-(Font)              up to 0.55997pt have occurred.
+(rerunfilecheck)             Checksum: CD2D9D2F38DD328D7F385E7605769981;2199.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 555.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 634.
  ) 
 Here is how much of TeX's memory you used:
- 6774 strings out of 495233
- 95421 string characters out of 3181614
- 182492 words of memory out of 3000000
- 9880 multiletter control sequences out of 15000+200000
- 77363 words of font info for 111 fonts, out of 3000000 for 9000
+ 7043 strings out of 495233
+ 98692 string characters out of 3181614
+ 187999 words of memory out of 3000000
+ 10118 multiletter control sequences out of 15000+200000
+ 68981 words of font info for 87 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 41i,14n,43p,1445b,342s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 41i,16n,43p,1445b,745s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:/Progra
-m Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program 
-Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Fi
-les (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files
- (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (
-x86)/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Program Files (x86)/MiK
-TeX 2.9/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/hacker_qian/AppData/Roami
-ng/MiKTeX/2.9/fonts/type1/urw/symbol/usyr.pfb><C:/Program Files (x86)/MiKTeX 2.
-9/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/typ
-e1/urw/times/utmbi8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/tim
-es/utmr8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.
-pfb>
-Output written on main.pdf (7 pages, 271835 bytes).
+m Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program 
+Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Fil
+es (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files
+ (x86)/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Program Files (x86)/M
+iKTeX 2.9/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/hacker_qian/AppData/Roa
+ming/MiKTeX/2.9/fonts/type1/urw/symbol/usyr.pfb><C:/Users/hacker_qian/AppData/R
+oaming/MiKTeX/2.9/fonts/type1/urw/symbol/usyr.pfb><C:/Program Files (x86)/MiKTe
+X 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts
+/type1/urw/times/utmbi8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw
+/times/utmr8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmr
+i8a.pfb>
+Output written on main.pdf (7 pages, 269580 bytes).
 PDF statistics:
- 392 PDF objects out of 1000 (max. 8388607)
- 55 named destinations out of 1000 (max. 500000)
- 298 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 408 PDF objects out of 1000 (max. 8388607)
+ 72 named destinations out of 1000 (max. 500000)
+ 274 words of extra memory for PDF output out of 10000 (max. 10000000)
 
