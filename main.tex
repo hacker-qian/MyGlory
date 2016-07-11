@@ -259,50 +259,44 @@ In this section, we begin with the necessity and benefits of modeling the affini
 \subsection{Affinity Classes and Metrics}
 We now discuss different affinity classes in the asymmetric access architecture. To accurately determine the affinity among vCPU, memory and network adapter, we adopt more detailed metrics to describe the access behavior in the virtualized systems.
 
-\subsubsection{VCPU to Memory Affinity}
+\subsubsection{Affinity between vCPU and Memory }
 VCPU to memory affinity refers to the traditional NUMA affinity between VM vCPU and its memory. Based on the previous work [], we standing in the point of view of the vCPU and expect the memory access locally as much as possible. The potential for NUMA affinity of vCPU is proportional to the amount of memory access to each NUMA node. That is, if a vCPU access most to the memory of a NUMA node, it has high affinity with this node. The NUMA affinity for vCPU can be calculated with equation 1, where $A_m$ is the affinity between vCPU and each NUMA node, $NC$ is a vector containing the accumulated number of memory access from VM vCPU to each node, and N is the number of nodes.
 \begin{equation}
-A_m=max(NC)/(\sum_{i=1}^N NC_i)
+A^m_=max(NC)/(\sum_{i=1}^N NC_i)
 \end{equation}
 
 This affinity is minimal when the number of memory access from vCPU to each node is equal, in this case, the affinity equal to 1/N. The affinity achieve maximum when all the memory access to one NUMA node, in this caes, NUMA affinity is 1.
 
-\subsubsection{VCPU to NIC Affinity}
-The vCPU to NIC affinity is defined as the physical access latency between NIC and the node which vCPU running on. Obviously, the node near to the NIC has best vCPU to NIC affinity. For latency sensitive virtual machines, it is better to binding all their vCPUs to the node near to the network adapter so as to achieve optimal performance. Pervious work [] has shown that CPI(cycles per instruction) can quantify the execution of a program. We use to this to measure affinity with the equation 2, where \emph{$CPI_i$} denote the CPI of VM threads excuting on each NUMA node i ($CPI_0$ refers to CPI which executing on the node near to NIC).
+\subsubsection{Affinity between NIC buffer and Memory}
+The NIC to memory affinity is the affinity between NIC ring buffer and VM memory buffer. When a NIC receives incoming packets, it copies the data packets into the memory buffers using DMA. Obviously, if the buffer is allocated in the memory attached to the node which near to NIC, the access latency of NIC to memory is lowest. Otherwise, NIC access to memory buffer of the remote node by using the QPI link, in this caes, the QPI bandwidth consume quickly. We define the affinity between NIC buffer and memory by using the equation 3, where VMD is the VM memory distribution table ,$VMD_0$ is memory of VM distribute on node 0 (which is near to the NIC), and $\sum_{i=1}^N VMD_i$ is the total number of VM memory.
 \begin{equation}
-A_n=CPI_0/(\sum_{i=1}^N CPI_i)
-\end{equation}
-
-$A_n$ achieve best when all the VM vCPU execute on the node near to NIC, in this case $A_n=1$. When VM do not execute on the node 0, the $A_n$ achieve minimum and equal to 0.
-
-
-\subsubsection{NIC to Memory Affinity}
-The NIC to memory affinity is the affinity between NIC ring buffer and VM memory buffer. When a NIC receives incoming packets, it copies the data packets into the buffers using DMA. Obviously, if the DMA buffer is allocated in the memory attached to the node which near to NIC, the access latency of NIC to memory is lowest. Otherwise, NIC access to memory buffer of the remote node by using the QPI link, in this caes, the QPI bandwidth consume quickly. We define the affinity between NIC buffer and memory by using the equation 3, where VMD is the VM memory distribution table ,$VMD_0$ is memory of VM distribute on node 0 (which is near to the NIC), and $\sum_{i=1}^N VMD_i$ is the total number of VM memory.
-\begin{equation}
-A_b=VMD_0/(\sum_{i=1}^N VMD_i)
+A^n=VMD_0/(\sum_{i=1}^N VMD_i)
 \end{equation}
 
 This affinity achieve best($A_b=1$) when all the VM memory are allocated on the node near to the NIC, the minimal value of $A_b$ is 0 when the VM do not allocate any memory on the node near to the NIC.
 
+\subsubsection{Affinity between vCPU and NIC}
+The vCPU to NIC affinity is defined as the physical access latency between NIC and the node which vCPU running on. Obviously, the node near to the NIC has best vCPU to NIC affinity. For latency sensitive virtual machines, it is better to binding all their vCPUs to the node near to the network adapter so as to achieve optimal performance. Pervious work [] has shown that CPI(cycles per instruction) can quantify the execution of a program. We use to this to measure affinity with the equation 2, where \emph{$CPI_i$} denote the CPI of VM threads excuting on each NUMA node i ($CPI_0$ refers to CPI which executing on the node near to NIC).
+\begin{equation}
+An=CPI_0/(\sum_{i=1}^N CPI_i)
+\end{equation}
+
+$A_n$ achieves best when all the VM vCPU execute on the node near to NIC, in this case $A_n=1$. When VM do not execute on the node 0, the $A_n$ achieve minimum and equal to 0.
+
 \subsection{Optimal Affinity Model Function}
 After calculate these three classes of affinity, we now discuss the optimal affinity model. In consideration of complexity in the virtualized environment, we first simply defined our optimal affinity model function as follows:
 \begin{equation}
-f(A_m, A_n, A_b)
+f(A_m, A_n, \alpha, \beta)
 \end{equation}
 
-As for I/O intensive virtual machines, data interacting with the host machine is frequently. When the NIC receives a large amount of packets, interrupts raising from the NIC also handled by the vCPU of the VM, packets were copied to the memory buffers by using DMA. In this case, the asymmetric I/O accesses are main factors which influencing the performance, our model function focus on optimizing the affinity $A_n$ and $A_b$. The optimal function can be instanced as follows:
+As for I/O intensive virtual machines, data interacting with the host machine is frequently. When the NIC receives a large amount of packets, interrupts raising from the NIC also handled by the vCPU of the VM, packets were copied to the memory buffers by using DMA. In this case, the asymmetric I/O accesses are main factors which influencing the performance, our model function focus on optimizing the affinity $A_n$. As for CPU intensive virtual machine, the vCPU threads frequently access memory to read and write data. In this case, the main factor resulting in the performance degradation is asymmetric memory access, our model function should focus on optimizing the affinity $A_m$.The optimal function can be instanced as follows:
 \begin{equation}
-f= (\alpha \times (A_n+A_b)+(1-\alpha)\times A_m)
+f= max (\alpha A_n+ \beta A_m)
 \end{equation}
 
-where $\alpha$ is the weight of $A_n$ and $A_b$ and (1-$\alpha$) is the weight of $A_m$
+where $\alpha$ is the weight of $A_n$ and ($\beta$) is the weight of $A_m$
 
-As for CPU intensive virtual machine, the vCPU threads frequently access memory to read and write data. In this case, the main factor resulting in the performance degradation is asymmetric memory access, our model function should focus on optimizing the affinity $A_m$.
-\begin{equation}
-f= (\beta \times A_m+(1-\beta)\times (A_n+A_b))
-\end{equation}
-
-but not the maximum affinity will achieve best performance, because maximum data locality will increase cache miss rate and affects performance.
+But not the maximum affinity will achieve best performance, because maximum data locality will increase shared resource contention such as cache contention and affects performance. Examination of prior work [] shows the relationship between optimum performance and maximum affinity, when the references of affinity up to 80\%, the system performance achieve optimum, so our optimal function also refers to this value.
 
 %\subsection{Experimental Environment}
 %different access to directly attached devices affect the performance of the workload in virtualized environment, especially with the different I/O access patten.
@@ -393,10 +387,10 @@ but not the maximum affinity will achieve best performance, because maximum data
 %\end{figure*}
 
 \section{Design}
-In this section, we describe the detail design of our vNUIOA, a platform independent runtime system that optimizing the overheads of asymmetric access architecture. We enabling three parts for incorporating NUMA and NUIOA overheads awareness with hypervisor: namely, Runtime performance analyzer, Affinity aware algorithm and Dynamic load balance scheduler.
+In this section, we describe the detail design of our vNUIOA, a platform independent runtime system that optimizing the overheads of asymmetric access architecture. We enabling three parts for incorporating NUMA and NUIOA overheads awareness with hypervisor: namely, runtime performance monitor, topology aware information analyzer and dynamic load balance scheduler.
 
 \subsection{Overview}
-An overview of vNUIOA is shown in Figure 5. It consists of the following three parts: the \textbf{\emph{Runtime Performance Analyzer}} modules collects and analyzes the information of guest and host os since the system booting, then the module classify and store these information of each VM. After these information is collected, we design the asymmetric access overheads awareness algorithm based on the optimal affinity model which describe in the section 3.
+An overview of vNUIOA is shown in Figure 5. It consists of the following three parts: the \textbf{\emph{Runtime Performance Collector}} module collects and store the information of guest os since the system booting, then the \textbf{\emph{Topology aware Information Analyzer}} module analyzes and processes these information based on the topology of host machine. According to the analysis results, the \textbf{\emph{Dynamic Load Balance Scheduler}} module calculates the optimal affinity model(which describe in the section 3), migrating memory and remapping vCPUs with the consideration of load balance. The details of each module are described as follows.
 
 %If the system load is not balanced and a certain node's load is very high, we should going to the \textbf{\emph{ threads affinity manager}} module and using I/O intensive aware migration strategy to migrate the VM vCPU threads to the appropriate NUMA node. Otherwise, the system load is balanced, we will going to the \textbf{\emph{memory affinity manager}} module to optimizing the memory affinity and achieving high performance.
 
@@ -409,8 +403,8 @@ An overview of vNUIOA is shown in Figure 5. It consists of the following three p
 \label{fig_sim}
 \end{figure*}
 
-\subsection{Runtime Performance Analyzer}
-Runtime information collector mainly collects the information we used in the optimal affinity modeling. To periodically collect the performance information of virtual machines and host server, it is imperative to analyze memory and I/O access activities in the virtualized system. To end this, we use the Linux performance monitoring tool perfmon [] to detect each virtual machine's memory and I/O access activities,then we store these information in the VMinfo table. Each table entry contains information about each NUMA node access to VM pages vector(NodeAcc Vector), VM memory distribution table (VMD table) and VM I/O request times vector (VIOR Vector). The detail of these three information listed as follows:
+\subsection{Runtime Performance Collector}
+Runtime information collector mainly collects the information we used in the affinity classes and metrics. To periodically collect the performance information of virtual machines and host server, it is imperative to analyze memory and I/O access activities in the virtualized system. To end this, we use the Linux performance monitoring tool perfmon [] to detect memory and I/O access activities, then we store these information in the VMinfo table for each VM. Each table entry contains information about the accumulated number of VM access to each node vector($NC_n$), VM memory distribution vector($VMD_n$), VM vCPU CPI on each node vector($CPI_n$) and number of VM I/O requests(VIOR). The details of these information listed in the Table 2:
 \begin{table}[h]
 \caption{Definitions of collected information.}
 
@@ -425,10 +419,10 @@ $VMD_n$ &
 \tabincell{l}{$VMD_n$ vector describes the distribution of VM\\ memory to node n}\\
 \hline
 $CPI_n$ &
-\tabincell{l}{$CPI_n$ vector describes the execution of VM\\ vCPU on node n}\\
+\tabincell{l}{$CPI_n$ vector describes the execution cycles of \\VM vCPU on node n}\\
 \hline
-NIOR  &
-\tabincell{l}{NIOR records the number of I/O requests per\\ second for VM .}\\
+VIOR  &
+\tabincell{l}{VIOR records the number of I/O requests per\\ second for VM .}\\
 \hline
 \hline
 \multicolumn{2}{|c|}{Physical machine statistics}\\
@@ -437,43 +431,54 @@ $L_i$  &
 \tabincell{l}{CPU load of core i ($L_i=\frac{CPUtime_i}{Elapsedtime_i}$).}\\
 \hline
 $DL_{mn}$ &
-\tabincell{l}{Access latency between each NUMA node.}\\
+\tabincell{l}{Access latency between NUMA node m and n.}\\
 \hline
 \end{tabular}
 \end{table}
 
-%\begin{itemize}
+%\begin{itemize}dynamic
 %  \item \textbf{NodeAcc vector}: The \emph{NodeAcc[n][p]} records the number of memory access from node n to each page p of the VM. The OS has a methods to measure if the pages has been accessed by the page fault, While the page is not set as present in the page table, the OS is noticed about the faulting virtual address, as well as the thread ID that caused the fault. By tracking page faults, it possible to detect which vCPU threads are accessing the memory page. We apply this memory access vector to vCPU thread to memory affinity modeling.
 %  \item \textbf{VMD table}: The VM memory distribution table, denoted as \emph{VMD$\left[m\right]\left[n\right]$}, collects the number of VM m memory references to NUMA node n. We analysis the VM guest physical address (GPA) and translate it to host physical address (HPA). Based on the HPA, we can obtain the distribution of virtual machine memory to the physical server nodes. The VMD table provide data distribution information for our NIC to vCPU thread affinity modeling.
 %  \item \textbf{VIOR vector}:The virtual machine I/O request times vector records the I/O request times per second. This information used to identify whether the virtual machine is I/O intensive. If the I/O operations of a virtual machine are too frequent, we should take a special consideration of these kinds of virtual machine in the NIC to vCPU thread affinity modeling.
 %\end{itemize}
 
-System load balance is also important for performance of physical server. As shown in the section 3.2.1, physical machine system load imbalance will cause a huge performance degradation. So in our design, we must take the system load into consideration. In this paper, we mainly consider average CPU load of each NUMA node,the per-node CPU load \emph{$L_n$} can be calculated as follows:
+\subsection{Topology aware Information Analyzer}
+Due to the nontransparent management of Virtual machine monitor, an accurate understanding of underlying topology is needed. We mainly analyse the runtime load per node and average access latency between each node,
+
+Runtime CPU load is also important for performance of physical server. As we experimented in the section 3.2.1, physical machine system load balance mechanism will disturb the distribution of hardware resources. So in our design, we must analyse the real time load based on the topology of host machine, we mainly consider average CPU load of each NUMA node,the per-node CPU load \emph{$L_n$} can be calculated as follows:
 \begin{equation}
 L_n=(\sum_{i=1}^M L_i) / M
 \end{equation}
-where M is the number of cores per NUMA node.we test that when the system load per node exceed the $80\%$ of the max load, the system performance begin to goes down. Based on this experimental value, if the system load per node up to $80\%$, the load of the node is high.
 
-Because of the hop-distance result in the previous NUMA affinity modeling inaccurate, in this work, we use a more accurate system information for NUIOA affinity modeling. We measure the average access latency between NIC and every NUMA node ,then we record it in a DL vector (\emph{DL[n]}). Based on the DL vector, the data transfer latency between NIC and nodes can be accurate measured.
+Where M is the number of cores per NUMA node. We test that when the system load per node exceed the $80\%$, the system performance begin to goes down. Based on this experimental value, we define the threshold of $L_n$ is 80\%, if the system load per node up to $80\%$, the load of the node is high.
 
-\subsection{Affinity aware algorithm}
-\textbf{Step 1}: we first identify which type a virtual machine belong to, because for different type VM, we adopt different optimal function to manage affinity. We classify the VMs into I/O intensive and I/O non intensive by looking the VIOR vector(see the Table 2), the I/O request threshold is to be determined experimentally. We found that the number of I/O request for VM with running CPU intensive task is less than 100 per second and for I/O intensive task the number is more than 1000 per second, so we choose a threshold value of 500 times per second in consideration of practical application attributes.
+Because of the hop-distance result in the previous NUMA affinity modeling inaccurate, in this work, we use a more accurate system information for NUIOA affinity modeling. We measure the average access latency $ADL_{mn}$ between each NUMA node by using the DL table(\emph{$DL_{mn}$}). Based on the DL table, the average data transfer latency between each node can be accurate calculate as follows:
+\begin{equation}
+ADL^T_n=\frac{VMD_n}{\sum_{i=1}^N VMD_i}DL_{mn}
+\end{equation}
 
-\textbf{Step 2}:calculating the optimal affinity for each VM. For different type of virtual machine, we assign different weight to the three affinity $A_m, A_n, A_b$, in this way, we can figure out optimal affinity function. I/O intensive VMs always have frequent I/O operation, so the affinity $A_n, A_b$ are more important in the optimal function, and as a result, the weight of the $A_n, A_b$ is dominant. CPU intensive VMs always read and write data with memory, in this case, the proportion of affinity $A_m$ is higher in the optimal function and we should assign a proper weight.
+Where N is the number of NUMA nodes and m is the node which VM vCPUs running on.
 
-\textbf{Step 3}: According to the calculating results in the step 2, we make the decision of memory migration and vCPU mapping. we only migrate memory when maximum number of remote node memory access is double than the number of local memory access (\emph{max(NC)>2*NC[0])}, because frequent memory migration also bring high overheads. We test several value and found that when select 2 times than the number of local access, we can achieve max benefits. The vCPU mapping also negotiate with the load balance mechanism in the system, the load per cpu core can be calculated by $L_i=\frac{CPUtime_i}{Elapsedtime_i}$. If the average CPU load per node is higher than 80\%, we should not map any vCPU to this node and select another node for vCPU remapping. We remapping the VM m vCPUs from the original node to node k instead of the node p is beneficial only if the average access latency to node k is less than average access latency to node p. remember $L_k$ and $L_p$ both less than 80\%.
+\subsection{Dynamic Load Balance Scheduler}
+Because of the affinity unawareness of load balance mechanism affects performance in the virtualized environment, we should take affinity and load balance both into consideration. There are two methods to achieve load balancing:\emph{push migration and pull migration}. In push migration, scheduler periodically checks the load of each processor and migrate threads from the processor with high load to processors with low load if needed. Pull migration refers to when a processor becomes idle and tries to steal threads form busy one. Our load balance mechanism work closely to the push migration method. Algorithm 1 shows the mechanism of our load balance aware migration scheduler.
 
-\textbf{Step 4}:
+\textbf{Step 1}: We first identify which type a virtual machine belong to, because for different type VM, we adopt different optimal function to manage affinity. We classify the VMs into I/O intensive and I/O non intensive by looking the VIOR vector(see the Table 2), the I/O request threshold is to be determined experimentally. We found that the number of I/O request for VM with running CPU intensive task is less than 100 per second and for I/O intensive task the number is more than 1000 per second, so we choose a threshold value of 500 times per second in consideration of practical application attributes.
+
+\textbf{Step 2}: Calculating the optimal placement for each VM. For different type of virtual machine, we assign different weight($\alpha, \beta$) to the affinity $A_m, A_n$, in this way, we can figure out optimal function. I/O intensive VMs always have frequent I/O operation, so the affinity $A_n$ are more important in the optimal function, and as a result, the weight of the $A_n$ is dominant and we apply the equation 5 which we discuss in the section 3. CPU intensive VMs always read and write data with memory, in this case, the proportion of affinity $A_m$ is higher in the optimal function and we should assign a proper weight, equation 6 are used in this case.
+
+\textbf{Step 3}: According to the calculating results in the step 2, we make the decision of memory migration and vCPU mapping. we only migrate memory when maximum number of remote node memory access is double than the number of local memory access (\emph{max(NC)>2*NC[0])}, because frequent memory migration also bring high overheads. We test several value and found that when select 2 times than the number of local access, we can achieve max benefits. The vCPU mapping also negotiate with the load balance mechanism in the system, the load per cpu core can be calculated by $L_i=\frac{CPUtime_i}{Elapsedtime_i}$. If the average CPU load per node is higher than 80\%, we should not map any vCPU to this node and select another node for vCPU remapping. We remapping the VM m vCPUs from the original node n to node k instead of the node p is beneficial only if the average access latency to node k($$) is less than average access latency to node p. remember $L_k$ and $L_p$ both less than 80\%.
+
+\textbf{Step 4}:After finishing the migration of VM memory and vCPUs, the scheduler continue schedule new coming VMs.
 
 %(\emph{$\sum_{i=1}^M L_i / M > 80\% $})
 \begin{algorithm}[h]
-\caption{Affinity aware Scheduling Algorithm}
+\caption{Load Balance aware Migration Algorithm}
 \label{algo:balance}
 \begin{algorithmic}[1]
 
-\STATE \textbf{Variables}: \emph{NIOR}, $L_n$, $NC_n$
+\STATE \textbf{Variables}: \emph{VIOR}, $L_n$, $NC_n$
 \FOR {each VM m}
-\STATE /*Periodic look at \emph{NIOR} vector*/
+\STATE /*Periodic look at \emph{VIOR} vector*/
 \IF { $NIOR \geq 500$}
    \STATE {$f_{IO}=\alpha \times (A_n+A_b)+(1-\alpha)\times A_m$};
        \IF {$L_n \leq 0.8$}
@@ -493,27 +498,6 @@ Because of the hop-distance result in the previous NUMA affinity modeling inaccu
 \ENDIF
 \ENDFOR
 
-%\STATE
-%\FORALL {$Node_i \in NUMA_{nodes}$}
-%    \STATE $Node_i \leftarrow 0$;
-%\ENDFOR
-%\FORALL {$Page_i \in VF_{info}$}
-%    \FORALL {$Node_j \in NUMA_{nodes}$}
-%        \IF {$Page_i \in Node_j$}
-%            \STATE $Node_j += 1$;
-%            \STATE Break;
-%        \ENDIF
-%    \ENDFOR
-%\ENDFOR
-%\FORALL {$Node_i \in NUMA_{nodes}$}
-%    \STATE $Aff_i = 0$;
-%\ENDFOR
-%\FORALL {$Node_i \in NUMA_{nodes}$}
-%    \FORALL {$Node_j \in NUMA_{nodes}$}
-%        \STATE $Aff_i += Node_i \times Node_j$;
-%    \ENDFOR
-%\ENDFOR
-%\RETURN $Aff$
 \end{algorithmic}
 \end{algorithm}
 
@@ -567,21 +551,16 @@ Because of the hop-distance result in the previous NUMA affinity modeling inaccu
 %There is no length limit for references. Each reference must explicitly list all authors of the paper. Papers not meeting this requirement will be rejected.
 
 \section{Implementation}
-We implemented the vNUIOA prototype in the KVM virtualized platform. The online performance analzyer, the threads migration manager and the memory migration manager are implemented as individual daemous in the KVM system. We describes the implementation details of these three modules.
+We implemented the vNUIOA prototype in the KVM virtualized platform. The holistic system is implemented as individual daemous in the KVM virtual machine monitor, We now describes the implementation details of our system.
 
 We use the KVM 2.0.0 as virtual machine monitor with the Intel VT-d and VT-x technology enable. Each VM run the Ubuntu 14.04LTS system and configured with one vCPUs and 1GB memory. In order to achieve high performance I/O virtualization, we enable Single Root I/O virtualization (SR-IOV)[] technology and assigned a virtual function to each VM. SR-IOV [] proposes a set a hardware enhancements for PCIe device and enable to create multiple "lightweight" PCIe functions,known as virtual Functions (VFs) that still contain the major device resources. In this work, we mainly consider SR-IOV because With the hardware enhancement, SRIOV remove the major VMM intervention and achieve I/O virtualization without losing performance.
 
-\subsection{Techniques for Information Collection}
-\textbf{\emph{Using page faults measure memory accesses}}: The OS has a methods to measure if the pages has been accessed by the page fault, While the page is not set as present in the page table, the OS is noticed about the faulting virtual address, as well as the thread ID that caused the fault. By tracking page faults, it possible to detect which vCPU threads are accessing the memory page. The performance analyzer accesses the hardware performance counters via Linux performance monitor tool \emph{perfmon}. We using
+\textbf{\emph{Using page faults measure memory accesses}}: The OS has a methods to measure if the pages has been accessed by the page fault, While the page is not set as present in the page table, the OS is noticed about the faulting virtual address, as well as the thread ID that caused the fault. By tracking page faults, it possible to detect which vCPU threads are accessing the memory page. We using Memory\ Page Faults with vCPU theads id in the Linux performance monitor tool \emph{perfmon} to sampling the access number to each node of the vCPU thread.
 
 \textbf{\emph{Counting I/O requests per second}}: As for the number of I/O request per second, we count the execution number of $ixgbevf\_clean\_tx\_irq$ or $ixgbevf\_clean\_rx\_irq$ function for every second. Because every time a VM handles a packet, the SR-IOV vf driver invokes these two functions.
 
 \textbf{\emph{Migrating pages via system call}}: After determine memory migration, we use the \emph{numa\_migrate\_pages()} system call to migrate all pages of the specified process from one node to another node. This system call supported by \textbf{libnuma} in the \textbf{numactl} package.
 
-
-\subsection{}
-
-\subsection{}
 
 
 \section{Evaluation}
